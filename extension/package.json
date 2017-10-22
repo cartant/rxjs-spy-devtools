@@ -1,0 +1,29 @@
+{
+  "dependencies": {},
+  "description": "DevTools for debugging RxJS applications",
+  "devDependencies": {
+    "@types/chrome": "^0.0.50",
+    "copy-webpack-plugin": "^4.2.0",
+    "rimraf": "^2.6.2",
+    "rxjs": "^5.5.0",
+    "ts-loader": "^3.0.4",
+    "typescript": "~2.5.2",
+    "uglifyjs-webpack-plugin": "1.0.0-beta.3",
+    "webpack": "^3.1.0"
+  },
+  "homepage": "https://github.com/cartant/rxjs-spy",
+  "license": "MIT",
+  "main": "index.js",
+  "name": "rxjs-spy-devtools",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cartant/rxjs-spy-devtools.git"
+  },
+  "scripts": {
+    "build:d": "rimraf dist && ./node_modules/.bin/webpack",
+    "build:p": "rimraf dist && ./node_modules/.bin/webpack --env.production",
+    "watch": "./node_modules/.bin/webpack -w"
+  },
+  "version": "0.0.1"
+}

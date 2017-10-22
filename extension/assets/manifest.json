@@ -1,0 +1,30 @@
+{
+    "background": {
+        "persistent": false,
+        "scripts": ["js/background-bundle.js"]
+    },
+    "content_scripts": [{
+        "all_frames": true,
+        "exclude_globs": [ "https://www.google*" ],
+        "js": ["js/content-bundle.js"],
+        "matches": ["<all_urls>"],
+        "run_at": "document_start"
+    }],
+    "description": "DevTools for debugging RxJS applications",
+    "devtools_page": "devtools.html",
+    "homepage_url": "https://github.com/cartant/rxjs-spy-devtools",
+    "icons": {
+        "16": "img/logo/16x16.png",
+        "38": "img/logo/38x38.png",
+        "48": "img/logo/48x48.png",
+        "128": "img/logo/128x128.png"
+    },
+    "manifest_version": 2,
+    "name": "RxJS Spy DevTools",
+    "permissions": [
+        "tabs",
+        "<all_urls>"
+    ],
+    "short_name": "RxJS Spy DevTools",
+    "version": "0.0.1"
+}
