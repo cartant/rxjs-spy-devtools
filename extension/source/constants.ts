@@ -8,3 +8,4 @@ export const CONTENT_CONNECT = "rxjs-spy-content-connect";
 export const CONTENT_MESSAGE = "rxjs-spy-content-message";
 export const PANEL_CONNECT = "rxjs-spy-panel-connect";
 export const PANEL_INIT = "rxjs-spy-panel-init";
+export const PANEL_MESSAGE = "rxjs-spy-panel-message";

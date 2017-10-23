@@ -11,7 +11,7 @@ import { mergeMap } from "rxjs/operators/mergeMap";
 import { share } from "rxjs/operators/share";
 import { takeUntil } from "rxjs/operators/takeUntil";
 import { tap } from "rxjs/operators/tap";
-import { CONTENT_CONNECT, CONTENT_MESSAGE, PANEL_CONNECT, PANEL_INIT } from "./constants";
+import { CONTENT_CONNECT, CONTENT_MESSAGE, PANEL_CONNECT, PANEL_INIT, PANEL_MESSAGE } from "./constants";
 
 const connections: { [key: string]: {
     contentPort?: any,
@@ -45,12 +45,16 @@ ports.pipe(
         (port, message) => ({ port, message })
     )
 ).subscribe(({ port, message }) => {
+    const tabId = message.tabId;
     if (message.name === PANEL_INIT) {
-        const tabId = message.tabId;
         if (connections[tabId]) {
             connections[tabId].devPort = port;
         } else {
             connections[tabId] = { devPort: port };
+        }
+    } else if (message.name === PANEL_MESSAGE) {
+        if (connections[tabId] && connections[tabId].contentPort) {
+            connections[tabId].contentPort.postMessage(message);
         }
     }
 });
@@ -72,8 +76,8 @@ ports.pipe(
         (port, message) => ({ port, message })
     )
 ).subscribe(({ port, message }) => {
+    const tabId = port.sender.tab.id;
     if (message.name === CONTENT_MESSAGE) {
-        const tabId = port.sender.tab.id;
         if (connections[tabId] && connections[tabId].devPort) {
             connections[tabId].devPort.postMessage(message);
         }
