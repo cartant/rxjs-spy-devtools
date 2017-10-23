@@ -13,7 +13,10 @@ module.exports = env => {
             rules: [{
                 test: /\.ts$/,
                 use: {
-                    loader: "ts-loader"
+                    loader: "ts-loader",
+                    options: {
+                        configFile: "tsconfig.harness.json"
+                    }
                 }
             }]
         },

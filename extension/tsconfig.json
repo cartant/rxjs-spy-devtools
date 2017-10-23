@@ -15,7 +15,5 @@
     "target": "es2017"
   },
   "exclude": [],
-  "include": [
-    "source/**/*.ts"
-  ]
+  "include": ["./source/**/*.ts"]
 }
