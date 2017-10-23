@@ -23,25 +23,25 @@ const ports = fromEventPattern<any>(
     (handler: any) => chrome.runtime.onConnect.removeListener(handler)
 ).pipe(share());
 
-const asMessages = (port: any) => fromEventPattern<any>(
+const messages = (port: any, teardown: () => void) => fromEventPattern<any>(
     (handler: any) => port.onMessage.addListener(handler),
     (handler: any) => port.onMessage.removeListener(handler)
 ).pipe(
     takeUntil(fromEventPattern(
         (handler: any) => port.onDisconnect.addListener(handler),
         (handler: any) => port.onDisconnect.removeListener(handler)
-    ))
+    )),
+    finalize(teardown)
 );
 
 ports.pipe(
     filter(port => port.name === PANEL_CONNECT),
-    mergeMap(port => asMessages(port).pipe(
-        finalize(() => {
+    mergeMap(port => messages(port, () => {
             const key = Object.keys(connections).find(key => connections[key].devPort === port);
             if (key) {
                 connections[key].devPort = null;
             }
-        })),
+        }),
         (port, message) => ({ port, message })
     )
 ).subscribe(({ port, message }) => {
@@ -65,11 +65,10 @@ ports.pipe(
             connections[tabId] = { contentPort: port };
         }
     }),
-    mergeMap(port => asMessages(port).pipe(
-        finalize(() => {
+    mergeMap(port => messages(port, () => {
             const tabId = port.sender.tab.id;
             connections[tabId].contentPort = null;
-        })),
+        }),
         (port, message) => ({ port, message })
     )
 ).subscribe(({ port, message }) => {
