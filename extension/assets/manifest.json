@@ -1,12 +1,12 @@
 {
     "background": {
         "persistent": false,
-        "scripts": ["js/background-bundle.js"]
+        "scripts": ["js/background.bundle.js"]
     },
     "content_scripts": [{
         "all_frames": true,
         "exclude_globs": [ "https://www.google*" ],
-        "js": ["js/content-bundle.js"],
+        "js": ["js/content.bundle.js"],
         "matches": ["<all_urls>"],
         "run_at": "document_start"
     }],

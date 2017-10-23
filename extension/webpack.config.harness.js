@@ -19,7 +19,7 @@ module.exports = env => {
         },
         output: {
             path: path.join(__dirname, "./harness"),
-            filename: "[name]-bundle.js"
+            filename: "[name].bundle.js"
         },
         plugins: [],
         resolve: {
