@@ -29,7 +29,7 @@ const asMessages = (port: any) => fromEventPattern<any>(
 ).pipe(
     takeUntil(fromEventPattern(
         (handler: any) => port.onDisconnect.addListener(handler),
-        (handler: any) => port.onMessage.removeListener(handler)
+        (handler: any) => port.onDisconnect.removeListener(handler)
     ))
 );
 
