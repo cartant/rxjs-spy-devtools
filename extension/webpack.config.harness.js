@@ -5,7 +5,7 @@ module.exports = env => {
 
     return {
         context: path.join(__dirname, "./"),
-        devtool: undefined,
+        devtool: "source-map",
         entry: {
             index: "./harness/index.ts",
         },

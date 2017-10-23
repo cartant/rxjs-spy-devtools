@@ -1,0 +1,1 @@
+Note that for source maps to work, the harness must be served using something like `superstatic`.
