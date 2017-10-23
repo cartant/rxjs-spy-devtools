@@ -35,8 +35,8 @@ const asMessages = (port: any) => fromEventPattern<any>(
 
 ports.pipe(
     filter(port => port.name === PANEL_CONNECT),
-    mergeMap(port => asMessages(port).pipe(finalize(() => {
-
+    mergeMap(port => asMessages(port).pipe(
+        finalize(() => {
             const key = Object.keys(connections).find(key => connections[key].devPort === port);
             if (key) {
                 connections[key].devPort = null;
@@ -45,7 +45,6 @@ ports.pipe(
         (port, message) => ({ port, message })
     )
 ).subscribe(({ port, message }) => {
-
     if (message.name === PANEL_INIT) {
         const tabId = message.tabId;
         if (connections[tabId]) {
@@ -59,7 +58,6 @@ ports.pipe(
 ports.pipe(
     filter(port => port.name === CONTENT_CONNECT),
     tap(port => {
-
         const tabId = port.sender.tab.id;
         if (connections[tabId]) {
             connections[tabId].contentPort = port;
@@ -67,15 +65,14 @@ ports.pipe(
             connections[tabId] = { contentPort: port };
         }
     }),
-    mergeMap(port => asMessages(port).pipe(finalize(() => {
-
+    mergeMap(port => asMessages(port).pipe(
+        finalize(() => {
             const tabId = port.sender.tab.id;
             connections[tabId].contentPort = null;
         })),
         (port, message) => ({ port, message })
     )
 ).subscribe(({ port, message }) => {
-
     if (message.name === CONTENT_MESSAGE) {
         const tabId = port.sender.tab.id;
         if (connections[tabId] && connections[tabId].devPort) {
