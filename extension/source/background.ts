@@ -54,16 +54,21 @@ ports.pipe(
     filter(({ key }) => Boolean(key))
 ).subscribe(({ key, port, message }) => {
     const connection = connections[key];
-    if (message.name === PANEL_INIT) {
+    switch (message.name) {
+    case PANEL_INIT:
         if (connection) {
             connection.devPort = port;
         } else {
             connections[key] = { contentPort: null, devPort: port };
         }
-    } else if (message.name === PANEL_MESSAGE) {
+        break;
+    case PANEL_MESSAGE:
         if (connection && connection.contentPort) {
             connection.contentPort.postMessage(message);
         }
+        break;
+    default:
+        console.warn("Unexpected message", message);
     }
 });
 
@@ -89,9 +94,14 @@ ports.pipe(
     )
 ).subscribe(({ key, port, message }) => {
     const connection = connections[key];
-    if (message.name === CONTENT_MESSAGE) {
+    switch (message.name) {
+    case CONTENT_MESSAGE:
         if (connection && connection.devPort) {
             connection.devPort.postMessage(message);
         }
+        break;
+    default:
+        console.warn("Unexpected message", message);
     }
+
 });
