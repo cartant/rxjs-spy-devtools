@@ -18,21 +18,31 @@ const connections: { [key: string]: {
     devPort?: any
 } } = {};
 
-const ports = fromEventPattern<any>(
-    (handler: any) => chrome.runtime.onConnect.addListener(handler),
-    (handler: any) => chrome.runtime.onConnect.removeListener(handler)
+type Port = chrome.runtime.Port;
+type PortListener = (port: chrome.runtime.Port) => void;
+
+const ports = fromEventPattern<Port>(
+    (handler: PortListener) => chrome.runtime.onConnect.addListener(handler),
+    (handler: PortListener) => chrome.runtime.onConnect.removeListener(handler)
 ).pipe(share());
 
-const messages = (port: any, teardown: () => void) => fromEventPattern<any>(
-    (handler: any) => port.onMessage.addListener(handler),
-    (handler: any) => port.onMessage.removeListener(handler)
+type Message = any;
+type MessageListener = (message: Message) => void;
+
+const messages = (port: Port, teardown: () => void) => fromEventPattern<Message>(
+    (handler: MessageListener) => port.onMessage.addListener(handler),
+    (handler: MessageListener) => port.onMessage.removeListener(handler)
 ).pipe(
     takeUntil(fromEventPattern(
-        (handler: any) => port.onDisconnect.addListener(handler),
-        (handler: any) => port.onDisconnect.removeListener(handler)
+        (handler: PortListener) => port.onDisconnect.addListener(handler),
+        (handler: PortListener) => port.onDisconnect.removeListener(handler)
     )),
     finalize(teardown)
 );
+
+const tabId = (port: Port) => (port && port.sender && port.sender.tab) ?
+    port.sender.tab.id :
+    undefined;
 
 ports.pipe(
     filter(port => port.name === PANEL_CONNECT),
@@ -43,43 +53,45 @@ ports.pipe(
             }
         }),
         (port, message) => ({ port, message })
-    )
+    ),
+    filter(({ message }) => Boolean(message.tabId))
 ).subscribe(({ port, message }) => {
-    const tabId = message.tabId;
+    const key = message.tabId;
     if (message.name === PANEL_INIT) {
-        if (connections[tabId]) {
-            connections[tabId].devPort = port;
+        if (connections[key]) {
+            connections[key].devPort = port;
         } else {
-            connections[tabId] = { devPort: port };
+            connections[key] = { devPort: port };
         }
     } else if (message.name === PANEL_MESSAGE) {
-        if (connections[tabId] && connections[tabId].contentPort) {
-            connections[tabId].contentPort.postMessage(message);
+        if (connections[key] && connections[key].contentPort) {
+            connections[key].contentPort.postMessage(message);
         }
     }
 });
 
 ports.pipe(
     filter(port => port.name === CONTENT_CONNECT),
+    filter(port => Boolean(tabId(port))),
     tap(port => {
-        const tabId = port.sender.tab.id;
-        if (connections[tabId]) {
-            connections[tabId].contentPort = port;
+        const key = tabId(port)!;
+        if (connections[key]) {
+            connections[key].contentPort = port;
         } else {
-            connections[tabId] = { contentPort: port };
+            connections[key] = { contentPort: port };
         }
     }),
     mergeMap(port => messages(port, () => {
-            const tabId = port.sender.tab.id;
-            connections[tabId].contentPort = null;
+            const key = tabId(port)!;
+            connections[key].contentPort = null;
         }),
         (port, message) => ({ port, message })
     )
 ).subscribe(({ port, message }) => {
-    const tabId = port.sender.tab.id;
+    const key = tabId(port)!;
     if (message.name === CONTENT_MESSAGE) {
-        if (connections[tabId] && connections[tabId].devPort) {
-            connections[tabId].devPort.postMessage(message);
+        if (connections[key] && connections[key].devPort) {
+            connections[key].devPort.postMessage(message);
         }
     }
 });
