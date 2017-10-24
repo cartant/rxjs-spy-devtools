@@ -7,27 +7,28 @@
 import { fromEventPattern } from "rxjs/observable/fromEventPattern";
 import { filter } from "rxjs/operators/filter";
 import { finalize } from "rxjs/operators/finalize";
+import { map } from "rxjs/operators/map";
 import { mergeMap } from "rxjs/operators/mergeMap";
 import { share } from "rxjs/operators/share";
 import { takeUntil } from "rxjs/operators/takeUntil";
 import { tap } from "rxjs/operators/tap";
 import { CONTENT_CONNECT, CONTENT_MESSAGE, PANEL_CONNECT, PANEL_INIT, PANEL_MESSAGE } from "./constants";
 
-const connections: { [key: string]: {
-    contentPort?: any,
-    devPort?: any
-} } = {};
-
+type Message = any;
+type MessageListener = (message: Message) => void;
 type Port = chrome.runtime.Port;
 type PortListener = (port: chrome.runtime.Port) => void;
+type TabId = any;
+
+const connections: { [key: string]: {
+    contentPort: Port | null,
+    devPort: Port | null
+} } = {};
 
 const ports = fromEventPattern<Port>(
     (handler: PortListener) => chrome.runtime.onConnect.addListener(handler),
     (handler: PortListener) => chrome.runtime.onConnect.removeListener(handler)
 ).pipe(share());
-
-type Message = any;
-type MessageListener = (message: Message) => void;
 
 const messages = (port: Port, teardown: () => void) => fromEventPattern<Message>(
     (handler: MessageListener) => port.onMessage.addListener(handler),
@@ -40,10 +41,6 @@ const messages = (port: Port, teardown: () => void) => fromEventPattern<Message>
     finalize(teardown)
 );
 
-const tabId = (port: Port) => (port && port.sender && port.sender.tab) ?
-    port.sender.tab.id :
-    undefined;
-
 ports.pipe(
     filter(port => port.name === PANEL_CONNECT),
     mergeMap(port => messages(port, () => {
@@ -52,46 +49,49 @@ ports.pipe(
                 connections[key].devPort = null;
             }
         }),
-        (port, message) => ({ port, message })
+        (port, message) => ({ key: message.tabId, port, message })
     ),
-    filter(({ message }) => Boolean(message.tabId))
-).subscribe(({ port, message }) => {
-    const key = message.tabId;
+    filter(({ key }) => Boolean(key))
+).subscribe(({ key, port, message }) => {
+    const connection = connections[key];
     if (message.name === PANEL_INIT) {
-        if (connections[key]) {
-            connections[key].devPort = port;
+        if (connection) {
+            connection.devPort = port;
         } else {
-            connections[key] = { devPort: port };
+            connections[key] = { contentPort: null, devPort: port };
         }
     } else if (message.name === PANEL_MESSAGE) {
-        if (connections[key] && connections[key].contentPort) {
-            connections[key].contentPort.postMessage(message);
+        if (connection && connection.contentPort) {
+            connection.contentPort.postMessage(message);
         }
     }
 });
 
 ports.pipe(
     filter(port => port.name === CONTENT_CONNECT),
-    filter(port => Boolean(tabId(port))),
-    tap(port => {
-        const key = tabId(port)!;
-        if (connections[key]) {
-            connections[key].contentPort = port;
+    map(port => ({
+        key: ((port && port.sender && port.sender.tab) ? port.sender.tab.id : undefined)! as TabId,
+        port
+    })),
+    filter(({ key }) => Boolean(key)),
+    tap(({ key, port }) => {
+        const connection = connections[key];
+        if (connection) {
+            connection.contentPort = port;
         } else {
-            connections[key] = { contentPort: port };
+            connections[key] = { contentPort: port, devPort: null };
         }
     }),
-    mergeMap(port => messages(port, () => {
-            const key = tabId(port)!;
+    mergeMap(({ key, port }) => messages(port, () => {
             connections[key].contentPort = null;
         }),
-        (port, message) => ({ port, message })
+        ({ key, port }, message) => ({ key, port, message })
     )
-).subscribe(({ port, message }) => {
-    const key = tabId(port)!;
+).subscribe(({ key, port, message }) => {
+    const connection = connections[key];
     if (message.name === CONTENT_MESSAGE) {
-        if (connections[key] && connections[key].devPort) {
-            connections[key].devPort.postMessage(message);
+        if (connection && connection.devPort) {
+            connection.devPort.postMessage(message);
         }
     }
 });
