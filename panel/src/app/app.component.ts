@@ -22,11 +22,13 @@ export class AppComponent {
       const backgroundConnection = chrome.runtime.connect({ name: PANEL_CONNECT });
       backgroundConnection.postMessage({ name: PANEL_INIT, tabId });
 
-      const backgroundMessages = fromEventPattern<any>(
-        (handler: any) => backgroundConnection.onMessage.addListener(handler),
-        (handler: any) => backgroundConnection.onMessage.removeListener(handler)
-      )
-      .share();
+      type Message = any;
+      type MessageListener = (message: Message) => void;
+
+      const backgroundMessages = fromEventPattern<Message>(
+        (handler: MessageListener) => backgroundConnection.onMessage.addListener(handler),
+        (handler: MessageListener) => backgroundConnection.onMessage.removeListener(handler)
+      ).share();
 
       backgroundMessages.filter(message => message.name === CONTENT_MESSAGE).subscribe(message => {
         _ngZone.run(() => { this.message = JSON.stringify(message, null, 2); });
