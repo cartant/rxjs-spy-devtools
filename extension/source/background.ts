@@ -19,7 +19,6 @@ type MessageListener = (message: Message) => void;
 type Port = chrome.runtime.Port;
 type PortListener = (port: chrome.runtime.Port) => void;
 type TabId = any;
-type Tuple = { key: TabId, port: Port, message: Message };
 
 const connections: { [key: string]: {
     contentPort: Port | null,
