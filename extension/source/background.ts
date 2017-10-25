@@ -9,6 +9,7 @@ import { filter } from "rxjs/operators/filter";
 import { finalize } from "rxjs/operators/finalize";
 import { map } from "rxjs/operators/map";
 import { mergeMap } from "rxjs/operators/mergeMap";
+import { partition } from "rxjs/operators/partition";
 import { share } from "rxjs/operators/share";
 import { takeUntil } from "rxjs/operators/takeUntil";
 import { tap } from "rxjs/operators/tap";
@@ -19,6 +20,7 @@ type MessageListener = (message: Message) => void;
 type Port = chrome.runtime.Port;
 type PortListener = (port: chrome.runtime.Port) => void;
 type TabId = any;
+type Tuple = { key: TabId, port: Port, message: Message };
 
 const connections: { [key: string]: {
     contentPort: Port | null,
@@ -41,7 +43,7 @@ const messages = (port: Port, teardown: () => void) => fromEventPattern<Message>
     finalize(teardown)
 );
 
-ports.pipe(
+const [panelInits, panelMessages] = partition(({ message }) => message.name === PANEL_INIT)(ports.pipe(
     filter(port => port.name === PANEL_CONNECT),
     mergeMap(port => messages(port, () => {
             const key = Object.keys(connections).find(key => connections[key].devPort === port);
@@ -51,28 +53,33 @@ ports.pipe(
         }),
         (port, message) => ({ key: message.tabId, port, message })
     ),
-    filter(({ key }) => Boolean(key))
-).subscribe(({ key, port, message }) => {
+    filter(({ key }) => Boolean(key)),
+    share()
+));
+
+panelInits.subscribe(({ key, port, message }) => {
     const connection = connections[key];
-    switch (message.name) {
-    case PANEL_INIT:
-        if (connection) {
-            connection.devPort = port;
-        } else {
-            connections[key] = { contentPort: null, devPort: port };
-        }
-        break;
-    case PANEL_MESSAGE:
+    if (connection) {
+        connection.devPort = port;
+    } else {
+        connections[key] = { contentPort: null, devPort: port };
+    }
+});
+
+panelMessages.subscribe(({ key, port, message }) => {
+    const connection = connections[key];
+    if (!connection) {
+        console.warn("No connection");
+    } else if (message.name === PANEL_MESSAGE) {
         if (connection && connection.contentPort) {
             connection.contentPort.postMessage(message);
         }
-        break;
-    default:
+    } else {
         console.warn("Unexpected message", message);
     }
 });
 
-ports.pipe(
+const contentMessages = ports.pipe(
     filter(port => port.name === CONTENT_CONNECT),
     map(port => ({
         key: ((port && port.sender && port.sender.tab) ? port.sender.tab.id : undefined)! as TabId,
@@ -92,16 +99,17 @@ ports.pipe(
         }),
         ({ key, port }, message) => ({ key, port, message })
     )
-).subscribe(({ key, port, message }) => {
+);
+
+contentMessages.subscribe(({ key, port, message }) => {
     const connection = connections[key];
-    switch (message.name) {
-    case CONTENT_MESSAGE:
-        if (connection && connection.devPort) {
+    if (!connection) {
+        console.warn("No connection");
+    } else if (message.name === CONTENT_MESSAGE) {
+        if (connection.devPort) {
             connection.devPort.postMessage(message);
         }
-        break;
-    default:
+    } else {
         console.warn("Unexpected message", message);
     }
-
 });
