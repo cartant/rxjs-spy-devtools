@@ -9,7 +9,6 @@ import { filter } from "rxjs/operators/filter";
 import { finalize } from "rxjs/operators/finalize";
 import { map } from "rxjs/operators/map";
 import { mergeMap } from "rxjs/operators/mergeMap";
-import { partition } from "rxjs/operators/partition";
 import { share } from "rxjs/operators/share";
 import { takeUntil } from "rxjs/operators/takeUntil";
 import { tap } from "rxjs/operators/tap";
@@ -40,10 +39,11 @@ const messages = (port: Port, teardown: () => void) => fromEventPattern<Message>
         (handler: PortListener) => port.onDisconnect.addListener(handler),
         (handler: PortListener) => port.onDisconnect.removeListener(handler)
     )),
-    finalize(teardown)
+    finalize(teardown),
+    share()
 );
 
-const [panelInits, panelMessages] = partition(({ message }) => message.name === PANEL_INIT)(ports.pipe(
+const panelMessages = ports.pipe(
     filter(port => port.name === PANEL_CONNECT),
     mergeMap(port => messages(port, () => {
             const key = Object.keys(connections).find(key => connections[key].devPort === port);
@@ -53,11 +53,12 @@ const [panelInits, panelMessages] = partition(({ message }) => message.name === 
         }),
         (port, message) => ({ key: message.tabId, port, message })
     ),
-    filter(({ key }) => Boolean(key)),
-    share()
-));
+    filter(({ key }) => Boolean(key))
+);
 
-panelInits.subscribe(({ key, port, message }) => {
+panelMessages.pipe(
+    filter(({ message }) => message.name === PANEL_INIT)
+).subscribe(({ key, port, message }) => {
     const connection = connections[key];
     if (connection) {
         connection.devPort = port;
@@ -66,7 +67,9 @@ panelInits.subscribe(({ key, port, message }) => {
     }
 });
 
-panelMessages.subscribe(({ key, port, message }) => {
+panelMessages.pipe(
+    filter(({ message }) => message.name !== PANEL_INIT)
+).subscribe(({ key, port, message }) => {
     const connection = connections[key];
     if (!connection) {
         console.warn("No connection");
