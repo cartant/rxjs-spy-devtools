@@ -1,17 +1,16 @@
 import { DataSource } from '@angular/cdk/collections';
 import { Component, NgZone } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { filter } from 'rxjs/operators/filter';
+import { map } from 'rxjs/operators/map';
+import { observeOn } from 'rxjs/operators/observeOn';
+import { scan } from 'rxjs/operators/scan';
+import { share } from 'rxjs/operators/share';
 import { Scheduler } from 'rxjs/Scheduler';
 import { async } from 'rxjs/scheduler/async';
 import { Subscription } from 'rxjs/Subscription';
 import { fromEventPattern } from 'rxjs/observable/fromEventPattern';
 import { CONTENT_MESSAGE, PANEL_CONNECT, PANEL_INIT } from '../../../extension/source/constants';
-
-import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/observeOn';
-import 'rxjs/add/operator/scan';
-import 'rxjs/add/operator/share';
 
 type Message = any;
 type MessageListener = (message: Message) => void;
@@ -51,7 +50,7 @@ export class AppComponent {
       const backgroundMessages = fromEventPattern<Message>(
         (handler: MessageListener) => backgroundConnection.onMessage.addListener(handler),
         (handler: MessageListener) => backgroundConnection.onMessage.removeListener(handler)
-      ).share();
+      ).pipe(share());
 
       class MessageDataSource extends DataSource<Message> {
 
@@ -60,11 +59,12 @@ export class AppComponent {
         }
 
         connect(): Observable<Message[]> {
-          return this._messages
-            .filter(message => message.name === CONTENT_MESSAGE)
-            .map(message => message.params)
-            .scan((acc, message) => [message, ...acc], [] as Message[])
-            .observeOn(enterZone(_ngZone));
+          return this._messages.pipe(
+            filter(message => message.name === CONTENT_MESSAGE),
+            map(message => message.params),
+            scan((acc, message) => [message, ...acc], [] as Message[]),
+            observeOn(enterZone(_ngZone))
+          );
         }
 
         disconnect(): void {}
