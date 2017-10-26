@@ -1,3 +1,22 @@
 <mat-sidenav-container fullscreen>
-  <p class="mat-body-1"><code>{{ message }}</code></p>
+  <mat-table #table [dataSource]="dataSource">
+    <ng-container matColumnDef="id">
+      <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{ row.id }} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="notification">
+      <mat-header-cell *matHeaderCellDef> Notification </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{ row.notification }} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="tag">
+      <mat-header-cell *matHeaderCellDef> Tag </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{ row.tag }} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="value">
+      <mat-header-cell *matHeaderCellDef> Value </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{ row.value | json }} </mat-cell>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
 </mat-sidenav-container>
