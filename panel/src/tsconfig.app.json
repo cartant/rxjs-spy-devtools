@@ -1,9 +1,14 @@
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
-    "outDir": "../out-tsc/app",
     "baseUrl": "./",
     "module": "es2015",
+    "outDir": "../out-tsc/app",
+    "paths": {
+      "@app/*": ["app/*"],
+      "@env/*": ["environments/*"],
+      "@ext/*": ["../../extension/*"]
+    },
     "types": ["chrome"]
   },
   "exclude": [

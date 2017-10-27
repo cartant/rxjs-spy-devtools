@@ -10,7 +10,7 @@
     "ng": "ng",
     "start": "ng serve",
     "test": "ng test --browser ChromeHeadless --single-run",
-    "watch": "ng test --browser ChromeHeadless"
+    "test:w": "ng test --browser ChromeHeadless"
   },
   "private": true,
   "dependencies": {

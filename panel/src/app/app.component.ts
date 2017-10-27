@@ -10,7 +10,7 @@ import { Scheduler } from 'rxjs/Scheduler';
 import { async } from 'rxjs/scheduler/async';
 import { Subscription } from 'rxjs/Subscription';
 import { fromEventPattern } from 'rxjs/observable/fromEventPattern';
-import { CONTENT_MESSAGE, PANEL_CONNECT, PANEL_INIT } from '../../../extension/source/constants';
+import { CONTENT_MESSAGE, PANEL_CONNECT, PANEL_INIT } from '@ext/source/constants';
 
 type Message = any;
 type MessageListener = (message: Message) => void;

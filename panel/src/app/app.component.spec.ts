@@ -2,7 +2,7 @@ import { TestBed, async } from '@angular/core/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSidenavModule, MatTableModule } from '@angular/material';
 
-import { AppComponent } from './app.component';
+import { AppComponent } from '@app/app.component';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
