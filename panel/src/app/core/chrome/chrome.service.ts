@@ -6,7 +6,7 @@ import { filter } from 'rxjs/operators/filter';
 import { map } from 'rxjs/operators/map';
 import { observeOn } from 'rxjs/operators/observeOn';
 import { share } from 'rxjs/operators/share';
-import { enterZone } from '@app/shared/utils/enter-zone-scheduler';
+import { enterZone } from '@app/shared/utils';
 import { CONTENT_MESSAGE, PANEL_CONNECT, PANEL_INIT } from '@ext/source/constants';
 import { Message, MessageListener } from './types';
 

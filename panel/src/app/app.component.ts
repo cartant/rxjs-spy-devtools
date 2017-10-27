@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { scan } from 'rxjs/operators/scan';
 import { ChromeService, Message } from '@app/core/chrome';
-import { DataSource } from '@app/shared/utils/data-source';
+import { DataSource } from '@app/shared/utils';
 
 @Component({
   selector: 'app-root',
