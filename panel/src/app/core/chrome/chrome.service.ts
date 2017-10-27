@@ -1,10 +1,12 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { empty } from 'rxjs/observable/empty';
 import { fromEventPattern } from 'rxjs/observable/fromEventPattern';
 import { filter } from 'rxjs/operators/filter';
 import { map } from 'rxjs/operators/map';
+import { observeOn } from 'rxjs/operators/observeOn';
 import { share } from 'rxjs/operators/share';
+import { enterZone } from '@app/shared/utils/enter-zone-scheduler';
 import { CONTENT_MESSAGE, PANEL_CONNECT, PANEL_INIT } from '@ext/source/constants';
 import { Message, MessageListener } from './types';
 
@@ -13,7 +15,7 @@ export class ChromeService {
 
   public messages: Observable<Message>;
 
-  constructor() {
+  constructor(ngZone: NgZone) {
     if ((typeof chrome !== 'undefined') && chrome && chrome.devtools) {
       const tabId = chrome.devtools.inspectedWindow.tabId;
       const backgroundConnection = chrome.runtime.connect({ name: PANEL_CONNECT });
@@ -25,6 +27,7 @@ export class ChromeService {
       ).pipe(
         filter(message => message.name === CONTENT_MESSAGE),
         map(message => message.params),
+        observeOn(enterZone(ngZone)),
         share()
       );
 
