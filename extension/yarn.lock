@@ -332,7 +332,7 @@ center-align@^0.1.1:
     align-text "^0.1.3"
     lazy-cache "^1.0.3"
 
-chalk@^2.2.0:
+chalk@^2.3.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/chalk/-/chalk-2.3.0.tgz#b5ea48efc9c1793dccc9b4767c93914d3f2d52ba"
   dependencies:
@@ -2157,10 +2157,10 @@ tough-cookie@~2.3.0:
     punycode "^1.4.1"
 
 ts-loader@^3.0.4:
-  version "3.0.5"
-  resolved "https://registry.yarnpkg.com/ts-loader/-/ts-loader-3.0.5.tgz#a22a50eda4258de6fcbd9ed4e7a356130a64cfa0"
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/ts-loader/-/ts-loader-3.1.0.tgz#d59bed512ee1dfc2636184f437714baad08c7ca1"
   dependencies:
-    chalk "^2.2.0"
+    chalk "^2.3.0"
     enhanced-resolve "^3.0.0"
     loader-utils "^1.0.2"
     semver "^5.0.1"
