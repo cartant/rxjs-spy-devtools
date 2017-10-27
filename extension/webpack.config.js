@@ -47,7 +47,13 @@ module.exports = env => {
                 context: "../panel/dist",
                 from: "index.html",
                 to: path.join(__dirname, "./dist"),
-                transform: content => content.toString().replace(/src="/g, "src=\"js/")
+                transform: content => content.toString()
+                    .replace(/href="([\w-_.]+\.css)"/g, `href="css/$1"`)
+                    .replace(/src="([\w-_.]+\.js)"/g, `src="js/$1"`)
+            }, {
+                context: "../panel/dist",
+                from: "**/*.css",
+                to: path.join(__dirname, "./dist/css")
             }, {
                 context: "../panel/dist",
                 from: "**/*.js",
