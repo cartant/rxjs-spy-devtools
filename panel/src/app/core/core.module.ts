@@ -1,11 +1,16 @@
 import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { environment } from '@env/environment';
+import { ChromeMockService, ChromeService } from './chrome';
+
+const service = ChromeService;
 
 @NgModule({
   imports: [
     CommonModule
   ],
-  declarations: []
+  declarations: [],
+  providers: [service]
 })
 export class CoreModule {
 
