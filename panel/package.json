@@ -3,12 +3,14 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
+    "build:d": "ng build",
+    "build:p": "ng build --target production --build-optimizer --vendor-chunk",
+    "e2e": "ng e2e",
+    "lint": "ng lint",
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
-    "test": "ng test",
-    "lint": "ng lint",
-    "e2e": "ng e2e"
+    "test": "ng test --browser ChromeHeadless --single-run",
+    "watch": "ng test --browser ChromeHeadless"
   },
   "private": true,
   "dependencies": {

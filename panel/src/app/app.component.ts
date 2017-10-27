@@ -41,7 +41,7 @@ export class AppComponent {
 
   constructor(private _ngZone: NgZone) {
 
-    if (chrome && chrome.devtools) {
+    if ((typeof chrome !== "undefined") && chrome && chrome.devtools) {
 
       const tabId = chrome.devtools.inspectedWindow.tabId;
       const backgroundConnection = chrome.runtime.connect({ name: PANEL_CONNECT });
