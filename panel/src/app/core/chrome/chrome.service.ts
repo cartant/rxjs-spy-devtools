@@ -2,12 +2,10 @@ import { Injectable, NgZone } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { empty } from 'rxjs/observable/empty';
 import { fromEventPattern } from 'rxjs/observable/fromEventPattern';
-import { filter } from 'rxjs/operators/filter';
-import { map } from 'rxjs/operators/map';
 import { observeOn } from 'rxjs/operators/observeOn';
 import { share } from 'rxjs/operators/share';
 import { enterZone } from '@app/shared/utils';
-import { CONTENT_MESSAGE, PANEL_CONNECT, PANEL_INIT } from '@ext/source/constants';
+import { PANEL_CONNECT, PANEL_INIT } from '@ext/source/constants';
 import { Message, MessageListener } from './types';
 
 @Injectable()
@@ -25,8 +23,6 @@ export class ChromeService {
         (handler: MessageListener) => backgroundConnection.onMessage.addListener(handler),
         (handler: MessageListener) => backgroundConnection.onMessage.removeListener(handler)
       ).pipe(
-        filter(message => message.name === CONTENT_MESSAGE),
-        map(message => message.params),
         observeOn(enterZone(ngZone)),
         share()
       );

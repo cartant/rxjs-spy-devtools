@@ -4,8 +4,7 @@ import { environment } from '@env/environment';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { ChromeMockService, ChromeService } from './chrome';
-
-const service = ChromeService;
+import { SpyService } from './spy';
 
 @NgModule({
   imports: [
@@ -14,7 +13,10 @@ const service = ChromeService;
     EffectsModule.forRoot([])
   ],
   declarations: [],
-  providers: [service]
+  providers: [
+    ChromeService,
+    SpyService
+  ]
 })
 export class CoreModule {
 

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { scan } from 'rxjs/operators/scan';
-import { ChromeService, Message } from '@app/core/chrome';
+import { Notification, SpyService } from '@app/core/spy';
 import { DataSource } from '@app/shared/utils';
 
 @Component({
@@ -10,12 +10,13 @@ import { DataSource } from '@app/shared/utils';
 })
 export class AppComponent {
 
-  public dataSource: DataSource<Message>;
+  public dataSource: DataSource<Notification>;
   public displayedColumns = ['id', 'notification', 'tag', 'value'];
 
-  constructor(service: ChromeService) {
-    this.dataSource = new DataSource(service.messages.pipe(
-      scan((acc, message) => [message, ...acc], [] as Message[])
-    ));
+  constructor(spyService: SpyService) {
+    const source = spyService.notifications.pipe(
+      scan<Notification>((acc, notification) => [notification, ...acc], [] as Notification[])
+    );
+    this.dataSource = new DataSource(source);
   }
 }
