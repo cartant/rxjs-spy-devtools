@@ -5,7 +5,7 @@ import { filter } from 'rxjs/operators/filter';
 import { map } from 'rxjs/operators/map';
 import { share } from 'rxjs/operators/share';
 import { ChromeService } from '../chrome';
-import { Graph, Notification } from './spy.interfaces';
+import { Notification } from './spy.interfaces';
 
 @Injectable()
 export class SpyService {

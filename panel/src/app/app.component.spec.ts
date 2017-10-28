@@ -3,6 +3,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSidenavModule, MatTableModule } from '@angular/material';
 import { AppComponent } from '@app/app.component';
 import { ChromeMockService, ChromeService } from '@app/core/chrome';
+import { SpyService } from '@app/core/spy';
 
 describe('AppComponent', () => {
 
@@ -16,7 +17,10 @@ describe('AppComponent', () => {
         MatSidenavModule,
         MatTableModule
       ],
-      providers: [{ provide: ChromeService, useClass: ChromeMockService }]
+      providers: [
+        { provide: ChromeService, useClass: ChromeMockService },
+        SpyService
+      ]
     }).compileComponents();
   }));
 

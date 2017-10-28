@@ -1,10 +1,14 @@
 import { TestBed, inject } from '@angular/core/testing';
+import { ChromeMockService, ChromeService } from '@app/core/chrome';
 import { SpyService } from './spy.service';
 
 describe('SpyService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [SpyService]
+      providers: [
+        { provide: ChromeService, useClass: ChromeMockService },
+        SpyService
+      ]
     });
   });
 

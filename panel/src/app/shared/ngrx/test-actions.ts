@@ -11,3 +11,5 @@ export class Bar implements Action {
   readonly type = Bar.type;
   constructor(public payload: { bar: number } = { bar: 56 }) {}
 }
+
+export type Any = Foo | Bar;
