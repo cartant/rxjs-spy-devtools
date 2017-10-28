@@ -5,6 +5,7 @@ import { AppComponent } from '@app/app.component';
 import { ChromeMockService, ChromeService } from '@app/core/chrome';
 
 describe('AppComponent', () => {
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
