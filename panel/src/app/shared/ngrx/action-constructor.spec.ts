@@ -1,5 +1,5 @@
 import { ActionConstructor } from './action-constructor';
-import { Foo } from './test-actions';
+import { Foo } from './foobar';
 
 describe('ActionConstructor', () => {
 

@@ -1,13 +1,13 @@
 import { Action } from '@ngrx/store';
 
 export class Foo implements Action {
-  static readonly type = 'FOO';
+  static readonly type = '[foobar] FOO';
   readonly type = Foo.type;
   constructor(public payload: { foo: number } = { foo: 42 }) {}
 }
 
 export class Bar implements Action {
-  static readonly type = 'BAR';
+  static readonly type = '[foobar] BAR';
   readonly type = Bar.type;
   constructor(public payload: { bar: number } = { bar: 56 }) {}
 }

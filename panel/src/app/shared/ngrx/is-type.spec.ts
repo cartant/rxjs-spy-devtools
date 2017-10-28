@@ -1,5 +1,5 @@
+import { Foo, Bar } from './foobar';
 import { isType } from './is-type';
-import { Foo, Bar } from './test-actions';
 
 describe('isType', () => {
 

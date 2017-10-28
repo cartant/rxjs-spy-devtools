@@ -3,9 +3,9 @@ import { of } from 'rxjs/observable/of';
 import { map } from 'rxjs/operators/map';
 import { tap } from 'rxjs/operators/tap';
 import { toArray } from 'rxjs/operators/toArray';
+import { Foo, Bar } from './foobar';
 import { isType } from './is-type';
 import { ofType } from './of-type';
-import { Foo, Bar } from './test-actions';
 import { observe } from '../utils/observe';
 
 describe('ofType', () => {

@@ -3,8 +3,8 @@ import { ActionWithPayload } from './action-with-payload';
 import { of } from 'rxjs/observable/of';
 import { tap } from 'rxjs/operators/tap';
 import { toArray } from 'rxjs/operators/toArray';
+import { Foo, Bar } from './foobar';
 import { ofType } from './of-type';
-import { Foo, Bar } from './test-actions';
 import { toPayload } from './to-payload';
 import { observe } from '../utils/observe';
 
