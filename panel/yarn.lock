@@ -38,7 +38,7 @@
   dependencies:
     tslib "^1.7.1"
 
-"@angular/cli@^1.4.8":
+"@angular/cli@1.4.9":
   version "1.4.9"
   resolved "https://registry.yarnpkg.com/@angular/cli/-/cli-1.4.9.tgz#cd5cd7a8f3bf3a1c28dfcdc523a011f0fcebfb96"
   dependencies:
@@ -208,9 +208,9 @@
   dependencies:
     "@angular-devkit/core" "0.0.20"
 
-"@types/chrome@^0.0.51":
-  version "0.0.51"
-  resolved "https://registry.yarnpkg.com/@types/chrome/-/chrome-0.0.51.tgz#173174baf8e801fe51d1d07e58c11044c74d2b8c"
+"@types/chrome@^0.0.52":
+  version "0.0.52"
+  resolved "https://registry.yarnpkg.com/@types/chrome/-/chrome-0.0.52.tgz#e1bf0c461cf9feb7f529cc70767132eb1730c157"
   dependencies:
     "@types/filesystem" "*"
 
