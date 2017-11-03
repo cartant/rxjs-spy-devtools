@@ -1,9 +1,9 @@
 import { StackFrame } from 'stacktrace-js';
 
 export interface Graph {
-  destination: number | null;
   merges: number[];
-  rootDestination: number | null;
+  rootSink: number | null;
+  sink: number | null;
   sources: number[];
 }
 
