@@ -5256,8 +5256,8 @@ ts-action-operators@^1.0.0:
   resolved "https://registry.yarnpkg.com/ts-action-operators/-/ts-action-operators-1.0.1.tgz#b6047d8b812ff0db7d21b195a51fbed671b7d4b2"
 
 ts-action@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/ts-action/-/ts-action-1.0.0.tgz#2b514cc296b23d9444f6734f2735ac9a35ee6319"
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/ts-action/-/ts-action-1.0.1.tgz#84e0f005b86d1a84fff7ce931e40f243bd4982d2"
 
 ts-node@~3.2.0:
   version "3.2.2"
