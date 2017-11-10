@@ -26,17 +26,17 @@ const connections: { [key: string]: {
 } } = {};
 
 const ports = fromEventPattern<Port>(
-    (handler: PortListener) => chrome.runtime.onConnect.addListener(handler),
-    (handler: PortListener) => chrome.runtime.onConnect.removeListener(handler)
+    handler => chrome.runtime.onConnect.addListener(handler as PortListener),
+    handler => chrome.runtime.onConnect.removeListener(handler as PortListener)
 ).pipe(share());
 
 const messages = (port: Port, teardown: () => void) => fromEventPattern<Message>(
-    (handler: MessageListener) => port.onMessage.addListener(handler),
-    (handler: MessageListener) => port.onMessage.removeListener(handler)
+    handler => port.onMessage.addListener(handler as MessageListener),
+    handler => port.onMessage.removeListener(handler as MessageListener)
 ).pipe(
     takeUntil(fromEventPattern(
-        (handler: PortListener) => port.onDisconnect.addListener(handler),
-        (handler: PortListener) => port.onDisconnect.removeListener(handler)
+        handler => port.onDisconnect.addListener(handler as PortListener),
+        handler => port.onDisconnect.removeListener(handler as PortListener)
     )),
     finalize(teardown),
     share()
