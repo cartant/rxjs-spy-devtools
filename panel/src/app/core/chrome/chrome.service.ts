@@ -20,8 +20,8 @@ export class ChromeService {
       backgroundConnection.postMessage({ name: PANEL_INIT, tabId });
 
       this.messages = fromEventPattern<Message>(
-        (handler: MessageListener) => backgroundConnection.onMessage.addListener(handler),
-        (handler: MessageListener) => backgroundConnection.onMessage.removeListener(handler)
+        handler => backgroundConnection.onMessage.addListener(handler as MessageListener),
+        handler => backgroundConnection.onMessage.removeListener(handler as MessageListener)
       ).pipe(
         observeOn(enterZone(ngZone)),
         share()
