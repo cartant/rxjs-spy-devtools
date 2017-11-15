@@ -4,6 +4,14 @@
  * found in the LICENSE file at https://github.com/cartant/rxjs-spy-devtools
  */
 
+import {
+    CONTENT_BACKGROUND_CONNECT,
+    CONTENT_MESSAGE,
+    PANEL_BACKGROUND_CONNECT,
+    PANEL_BACKGROUND_INIT,
+    PANEL_MESSAGE
+} from "@devtools/constants";
+
 import { fromEventPattern } from "rxjs/observable/fromEventPattern";
 import { filter } from "rxjs/operators/filter";
 import { finalize } from "rxjs/operators/finalize";
@@ -12,7 +20,6 @@ import { mergeMap } from "rxjs/operators/mergeMap";
 import { share } from "rxjs/operators/share";
 import { takeUntil } from "rxjs/operators/takeUntil";
 import { tap } from "rxjs/operators/tap";
-import { CONTENT_CONNECT, CONTENT_MESSAGE, PANEL_CONNECT, PANEL_INIT, PANEL_MESSAGE } from "./constants";
 
 type Message = any;
 type MessageListener = (message: Message) => void;
@@ -22,7 +29,7 @@ type TabId = any;
 
 const connections: { [key: string]: {
     contentPort: Port | null,
-    devPort: Port | null
+    panelPort: Port | null
 } } = {};
 
 const ports = fromEventPattern<Port>(
@@ -43,11 +50,11 @@ const messages = (port: Port, teardown: () => void) => fromEventPattern<Message>
 );
 
 const panelMessages = ports.pipe(
-    filter(port => port.name === PANEL_CONNECT),
+    filter(port => port.name === PANEL_BACKGROUND_CONNECT),
     mergeMap(port => messages(port, () => {
-            const key = Object.keys(connections).find(key => connections[key].devPort === port);
+            const key = Object.keys(connections).find(key => connections[key].panelPort === port);
             if (key) {
-                connections[key].devPort = null;
+                connections[key].panelPort = null;
             }
         }),
         (port, message) => ({ key: message.tabId, port, message })
@@ -56,23 +63,23 @@ const panelMessages = ports.pipe(
 );
 
 panelMessages.pipe(
-    filter(({ message }) => message.name === PANEL_INIT)
+    filter(({ message }) => message.postType === PANEL_BACKGROUND_INIT)
 ).subscribe(({ key, port, message }) => {
     const connection = connections[key];
     if (connection) {
-        connection.devPort = port;
+        connection.panelPort = port;
     } else {
-        connections[key] = { contentPort: null, devPort: port };
+        connections[key] = { contentPort: null, panelPort: port };
     }
 });
 
 panelMessages.pipe(
-    filter(({ message }) => message.name !== PANEL_INIT)
+    filter(({ message }) => message.postType !== PANEL_BACKGROUND_INIT)
 ).subscribe(({ key, port, message }) => {
     const connection = connections[key];
     if (!connection) {
         console.warn("No connection");
-    } else if (message.name === PANEL_MESSAGE) {
+    } else if (message.postType === PANEL_MESSAGE) {
         if (connection && connection.contentPort) {
             connection.contentPort.postMessage(message);
         }
@@ -82,7 +89,7 @@ panelMessages.pipe(
 });
 
 const contentMessages = ports.pipe(
-    filter(port => port.name === CONTENT_CONNECT),
+    filter(port => port.name === CONTENT_BACKGROUND_CONNECT),
     map(port => ({
         key: ((port && port.sender && port.sender.tab) ? port.sender.tab.id : undefined)! as TabId,
         port
@@ -93,7 +100,7 @@ const contentMessages = ports.pipe(
         if (connection) {
             connection.contentPort = port;
         } else {
-            connections[key] = { contentPort: port, devPort: null };
+            connections[key] = { contentPort: port, panelPort: null };
         }
     }),
     mergeMap(({ key, port }) => messages(port, () => {
@@ -107,9 +114,9 @@ contentMessages.subscribe(({ key, port, message }) => {
     const connection = connections[key];
     if (!connection) {
         console.warn("No connection");
-    } else if (message.name === CONTENT_MESSAGE) {
-        if (connection.devPort) {
-            connection.devPort.postMessage(message);
+    } else if (message.postType === CONTENT_MESSAGE) {
+        if (connection.panelPort) {
+            connection.panelPort.postMessage(message);
         }
     } else {
         console.warn("Unexpected message", message);

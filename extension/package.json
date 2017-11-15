@@ -2,11 +2,11 @@
   "dependencies": {},
   "description": "DevTools for debugging RxJS applications",
   "devDependencies": {
-    "@types/chrome": "^0.0.53",
+    "@types/chrome": "^0.0.54",
     "copy-webpack-plugin": "^4.2.0",
     "rimraf": "^2.6.2",
     "rxjs": "^5.5.0",
-    "rxjs-spy": "^6.0.0-beta.0",
+    "rxjs-spy": "^6.0.0-beta.1",
     "ts-loader": "^3.0.4",
     "typescript": "~2.6.1",
     "uglifyjs-webpack-plugin": "^1.0.1",

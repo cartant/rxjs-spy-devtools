@@ -6,8 +6,8 @@
     "outDir": "../out-tsc/app",
     "paths": {
       "@app/*": ["app/*"],
-      "@env/*": ["environments/*"],
-      "@ext/*": ["../../extension/*"]
+      "@devtools/*": ["../../extension/node_modules/rxjs-spy/devtools/*"],
+      "@env/*": ["environments/*"]
     },
     "types": ["chrome"]
   },

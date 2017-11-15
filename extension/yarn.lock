@@ -2,9 +2,9 @@
 # yarn lockfile v1
 
 
-"@types/chrome@^0.0.53":
-  version "0.0.53"
-  resolved "https://registry.yarnpkg.com/@types/chrome/-/chrome-0.0.53.tgz#b32ad41a3ec900bc301962378e3278cd23a75910"
+"@types/chrome@^0.0.54":
+  version "0.0.54"
+  resolved "https://registry.yarnpkg.com/@types/chrome/-/chrome-0.0.54.tgz#c971f1e8d57a82ae1f6232a09e839a37b50744e9"
   dependencies:
     "@types/filesystem" "*"
 
@@ -1889,9 +1889,9 @@ run-queue@^1.0.0, run-queue@^1.0.3:
   dependencies:
     aproba "^1.1.1"
 
-rxjs-spy@^6.0.0-beta.0:
-  version "6.0.0-beta.0"
-  resolved "https://registry.yarnpkg.com/rxjs-spy/-/rxjs-spy-6.0.0-beta.0.tgz#d12c48cedfcda9af57881cb27b456dd121744795"
+rxjs-spy@^6.0.0-beta.1:
+  version "6.0.0-beta.1"
+  resolved "https://registry.yarnpkg.com/rxjs-spy/-/rxjs-spy-6.0.0-beta.1.tgz#e5585d577b501627421759c5302ef28552c306ab"
   dependencies:
     "@types/stacktrace-js" "^0.0.32"
     stacktrace-js "^2.0.0"

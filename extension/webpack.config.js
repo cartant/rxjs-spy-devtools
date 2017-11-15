@@ -62,6 +62,9 @@ module.exports = env => {
             ...plugins
         ],
         resolve: {
+            alias: {
+                "@devtools": path.resolve(__dirname, "./node_modules/rxjs-spy/devtools"),
+            },
             extensions: [".ts", ".js"]
         }
     }

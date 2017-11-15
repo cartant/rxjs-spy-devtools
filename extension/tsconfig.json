@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": "./",
     "declaration": false,
     "importHelpers": false,
     "lib": ["dom", "es2017"],
@@ -7,6 +8,9 @@
     "moduleResolution": "node",
     "noEmitHelpers": false,
     "noImplicitAny": true,
+    "paths": {
+      "@devtools/*": ["node_modules/rxjs-spy/devtools/*"]
+    },
     "removeComments": true,
     "skipLibCheck": true,
     "sourceMap": true,
