@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { environment } from '@env/environment';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { ChromeMockService, ChromeService } from './chrome';
+import { ChromeService } from './chrome';
 import { SpyService } from './spy';
 
 @NgModule({
@@ -14,7 +14,7 @@ import { SpyService } from './spy';
   ],
   declarations: [],
   providers: [
-    ChromeService,
+    ChromeService.forRoot(),
     SpyService
   ]
 })

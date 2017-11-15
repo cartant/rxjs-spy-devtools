@@ -1,18 +1,29 @@
-import { Injectable, NgZone } from '@angular/core';
+import { Injectable, NgZone, Provider } from '@angular/core';
+import { PANEL_BACKGROUND_CONNECT, PANEL_BACKGROUND_INIT } from '@devtools/constants';
+import { Post } from '@devtools/interfaces';
 import { Observable } from 'rxjs/Observable';
 import { empty } from 'rxjs/observable/empty';
 import { fromEventPattern } from 'rxjs/observable/fromEventPattern';
 import { observeOn } from 'rxjs/operators/observeOn';
 import { share } from 'rxjs/operators/share';
 import { enterZone } from '@app/shared/utils';
-import { PANEL_BACKGROUND_CONNECT, PANEL_BACKGROUND_INIT } from '@devtools/constants';
-import { Post } from '@devtools/interfaces';
+import { ChromeMockService } from './chrome-mock.service';
 import { MessageListener } from './types';
+
+export function createChromeService(ngZone: NgZone): ChromeMockService | ChromeService {
+  return (chrome && chrome.devtools) ?
+    new ChromeService(ngZone) :
+    new ChromeMockService(ngZone);
+}
 
 @Injectable()
 export class ChromeService {
 
   public posts: Observable<Post>;
+
+  public static forRoot(): Provider {
+    return { deps: [NgZone], provide: ChromeService, useFactory: createChromeService };
+  }
 
   constructor(ngZone: NgZone) {
     if ((typeof chrome !== 'undefined') && chrome && chrome.devtools) {
