@@ -1,8 +1,8 @@
 <mat-sidenav-container fullscreen>
   <mat-table #table [dataSource]="dataSource">
-    <ng-container matColumnDef="id">
+    <ng-container matColumnDef="subscriptionId">
       <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{ row.id }} </mat-cell>
+      <mat-cell *matCellDef="let row"> {{ row.subscriptionId }} </mat-cell>
     </ng-container>
     <ng-container matColumnDef="notification">
       <mat-header-cell *matHeaderCellDef> Notification </mat-header-cell>

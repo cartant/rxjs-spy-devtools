@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { auditTime } from 'rxjs/operators/auditTime';
 import { scan } from 'rxjs/operators/scan';
 import { SpyService } from '@app/root/spy';
 import { DataSource } from '@app/shared/utils';
@@ -13,11 +14,12 @@ import { Notification } from '@devtools/interfaces';
 export class AppComponent {
 
   public dataSource: DataSource<Notification>;
-  public displayedColumns = ['id', 'notification', 'tag', 'value'];
+  public displayedColumns = ['subscriptionId', 'notification', 'tag', 'value'];
 
   constructor(spyService: SpyService) {
     const source = spyService.notifications.pipe(
-      scan<Notification>((acc, notification) => [notification, ...acc], [] as Notification[])
+      scan<Notification>((acc, notification) => [notification, ...acc], [] as Notification[]),
+      auditTime(200)
     );
     this.dataSource = new DataSource(source);
   }

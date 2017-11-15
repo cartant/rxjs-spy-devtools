@@ -11,7 +11,7 @@ import { ChromeMockService } from './chrome-mock.service';
 import { MessageListener } from './types';
 
 export function createChromeService(ngZone: NgZone): ChromeMockService | ChromeService {
-  return (chrome && chrome.devtools) ?
+  return ((typeof chrome !== 'undefined') && chrome && chrome.devtools) ?
     new ChromeService(ngZone) :
     new ChromeMockService(ngZone);
 }
@@ -26,22 +26,17 @@ export class ChromeService {
   }
 
   constructor(ngZone: NgZone) {
-    if ((typeof chrome !== 'undefined') && chrome && chrome.devtools) {
-      const tabId = chrome.devtools.inspectedWindow.tabId;
-      const backgroundConnection = chrome.runtime.connect({ name: PANEL_BACKGROUND_CONNECT });
-      backgroundConnection.postMessage({ postType: PANEL_BACKGROUND_INIT, tabId });
 
-      this.posts = fromEventPattern<Post>(
-        handler => backgroundConnection.onMessage.addListener(handler as MessageListener),
-        handler => backgroundConnection.onMessage.removeListener(handler as MessageListener)
-      ).pipe(
-        observeOn(enterZone(ngZone)),
-        share()
-      );
+    const tabId = chrome.devtools.inspectedWindow.tabId;
+    const backgroundConnection = chrome.runtime.connect({ name: PANEL_BACKGROUND_CONNECT });
+    backgroundConnection.postMessage({ postType: PANEL_BACKGROUND_INIT, tabId });
 
-    } else {
-      console.warn('No Chrome DevTools environment.');
-      this.posts = empty<Post>();
-    }
+    this.posts = fromEventPattern<Post>(
+      handler => backgroundConnection.onMessage.addListener(handler as MessageListener),
+      handler => backgroundConnection.onMessage.removeListener(handler as MessageListener)
+    ).pipe(
+      observeOn(enterZone(ngZone)),
+      share()
+    );
   }
 }

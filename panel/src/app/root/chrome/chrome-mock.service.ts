@@ -16,12 +16,14 @@ export class ChromeMockService {
     this.posts = interval(1000).pipe(
       map(counter => ({
         graph: null,
-        id: 0,
         messageType: 'notification',
         notification: 'before-next',
+        observableId: 0,
         postId: counter.toString(),
         postType: 'content-message',
         stackTrace: null,
+        subscriberId: 0,
+        subscriptionId: 0,
         tag: 'mock',
         type: 'interval',
         value: counter
