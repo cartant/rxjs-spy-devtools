@@ -3,7 +3,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { MatSidenavModule, MatTableModule } from '@angular/material';
 import { AppComponent } from '@app/app.component';
-import { CoreModule } from '@app/core';
+import { RootModule } from '@app/root';
 import { SharedModule } from '@app/shared';
 
 @NgModule({
@@ -13,9 +13,9 @@ import { SharedModule } from '@app/shared';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    CoreModule,
     MatSidenavModule,
     MatTableModule,
+    RootModule,
     SharedModule
   ],
   providers: [],

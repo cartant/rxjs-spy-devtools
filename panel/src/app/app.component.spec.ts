@@ -2,8 +2,8 @@ import { TestBed, async } from '@angular/core/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSidenavModule, MatTableModule } from '@angular/material';
 import { AppComponent } from '@app/app.component';
-import { ChromeMockService, ChromeService } from '@app/core/chrome';
-import { SpyService } from '@app/core/spy';
+import { ChromeMockService, ChromeService } from '@app/root/chrome';
+import { SpyService } from '@app/root/spy';
 
 describe('AppComponent', () => {
 

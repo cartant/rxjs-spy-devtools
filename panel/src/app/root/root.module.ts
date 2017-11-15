@@ -18,15 +18,15 @@ import { SpyService } from './spy';
     SpyService
   ]
 })
-export class CoreModule {
+export class RootModule {
 
   constructor(
     @Optional()
     @SkipSelf()
-    parentModule: CoreModule
+    parentModule: RootModule
   ) {
     if (parentModule) {
-      throw new Error('CoreModule is already loaded. Import only in AppModule.');
+      throw new Error('RootModule is already loaded. Import only in AppModule.');
     }
   }
 }

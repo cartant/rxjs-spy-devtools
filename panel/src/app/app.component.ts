@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { scan } from 'rxjs/operators/scan';
-import { SpyService } from '@app/core/spy';
+import { SpyService } from '@app/root/spy';
 import { DataSource } from '@app/shared/utils';
 import { Notification } from '@devtools/interfaces';
 
