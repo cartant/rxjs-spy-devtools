@@ -34,7 +34,7 @@ export class ChromeMockService {
         },
         tick: 0,
         timestamp: 0,
-        value: counter
+        value: { json: JSON.stringify(counter) }
       })),
       share()
     );
