@@ -29,6 +29,7 @@
     "@ngrx/effects": "^4.1.0",
     "@ngrx/entity": "^4.1.0",
     "@ngrx/store": "^4.1.0",
+    "@ngrx/store-devtools": "^4.1.0",
     "core-js": "^2.4.1",
     "rxjs": "^5.5.0",
     "zone.js": "^0.8.14"
