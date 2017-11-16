@@ -15,17 +15,25 @@ export class ChromeMockService {
     console.warn('Using mock Chrome service.');
     this.posts = interval(1000).pipe(
       map(counter => ({
-        graph: null,
         messageType: 'notification',
         notification: 'before-next',
-        observableId: '0',
+        observable: {
+          id: '0',
+          tag: 'mock',
+          type: 'interval'
+        },
         postId: counter.toString(),
         postType: 'content-message',
-        stackTrace: null,
-        subscriberId: '0',
-        subscriptionId: '0',
-        tag: 'mock',
-        type: 'interval',
+        subscriber: {
+          id: '0'
+        },
+        subscription: {
+          graph: null,
+          id: '0',
+          stackTrace: null
+        },
+        tick: 0,
+        timestamp: 0,
         value: counter
       })),
       share()
