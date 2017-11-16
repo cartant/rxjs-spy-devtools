@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { auditTime } from 'rxjs/operators/auditTime';
-import { scan } from 'rxjs/operators/scan';
-import { UI_AUDIT_TIME } from '@app/constants';
-import { SpyService } from '@app/root/spy';
+import { map } from 'rxjs/operators/map';
+import { APP_AUDIT_TIME } from '@app/constants';
+import { Notification, selectAllNotifications, State } from '@app/root/spy';
 import { DataSource } from '@app/shared/utils';
-import { Notification } from '@devtools/interfaces';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -15,12 +15,12 @@ import { Notification } from '@devtools/interfaces';
 export class AppComponent {
 
   public dataSource: DataSource<Notification>;
-  public displayedColumns = ['subscriptionId', 'notification', 'tag', 'value'];
+  public displayedColumns = ['id', 'notification', 'tag', 'value'];
 
-  constructor(spyService: SpyService) {
-    const source = spyService.notifications.pipe(
-      scan<Notification>((acc, notification) => [notification, ...acc], [] as Notification[]),
-      auditTime(UI_AUDIT_TIME)
+  constructor(store: Store<State>) {
+    const source = store.pipe(
+      map(selectAllNotifications),
+      auditTime(APP_AUDIT_TIME)
     );
     this.dataSource = new DataSource(source);
   }

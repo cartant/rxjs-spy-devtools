@@ -1,8 +1,8 @@
 <mat-sidenav-container fullscreen>
   <mat-table #table [dataSource]="dataSource">
-    <ng-container matColumnDef="subscriptionId">
+    <ng-container matColumnDef="id">
       <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{ row.subscription.id }} </mat-cell>
+      <mat-cell *matCellDef="let row"> {{ row.id }} </mat-cell>
     </ng-container>
     <ng-container matColumnDef="notification">
       <mat-header-cell *matHeaderCellDef> Notification </mat-header-cell>
@@ -10,7 +10,7 @@
     </ng-container>
     <ng-container matColumnDef="tag">
       <mat-header-cell *matHeaderCellDef> Tag </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{ row.observable.tag }} </mat-cell>
+      <mat-cell *matCellDef="let row"> {{ row.tag }} </mat-cell>
     </ng-container>
     <ng-container matColumnDef="value">
       <mat-header-cell *matHeaderCellDef> Value </mat-header-cell>

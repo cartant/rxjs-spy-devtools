@@ -5,18 +5,19 @@ import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
 import { ChromeService } from './chrome';
-import { SpyService } from './spy';
+import { provideReducers, REDUCERS_TOKEN, SpyEffects, SpyService } from './spy';
 
 @NgModule({
   imports: [
     CommonModule,
-    StoreModule.forRoot({}),
+    StoreModule.forRoot(REDUCERS_TOKEN),
     StoreDevtoolsModule.instrument({}),
-    EffectsModule.forRoot([])
+    EffectsModule.forRoot([SpyEffects])
   ],
   declarations: [],
   providers: [
     ChromeService.forRoot(),
+    provideReducers(),
     SpyService
   ]
 })
