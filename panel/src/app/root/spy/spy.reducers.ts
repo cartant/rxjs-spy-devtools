@@ -15,6 +15,7 @@ export interface Notification {
   tag: string | null;
   tick: number;
   timestamp: number;
+  type: string;
   value?: { json: string };
 }
 export type NotificationState = EntityState<Notification>;
@@ -34,6 +35,7 @@ const notificationReducer = reducer<NotificationState>([
       tag: payload.observable.tag,
       tick: payload.tick,
       timestamp: payload.timestamp,
+      type: payload.observable.type,
       value: payload.value
     }, state);
     if (result.ids.length > APP_MAX_NOTIFICATIONS) {

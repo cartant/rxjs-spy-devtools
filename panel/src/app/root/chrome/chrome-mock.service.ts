@@ -44,8 +44,8 @@ export class ChromeMockService {
       id: '1',
       subscriptions: ['3'],
       tag: 'mock',
-      tick: 0/*,
-      type: 'interval'*/
+      tick: 0,
+      type: 'interval'
     };
     this.subject_ = new Subject<Post>();
     this.subscriber_ = {

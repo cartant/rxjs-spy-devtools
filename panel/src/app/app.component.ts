@@ -15,7 +15,7 @@ import { DataSource } from '@app/shared/utils';
 export class AppComponent {
 
   public dataSource: DataSource<Notification>;
-  public displayedColumns = ['id', 'notification', 'tag', 'value'];
+  public displayedColumns = ['id', 'notification', 'tag', 'type', 'value'];
 
   constructor(store: Store<State>) {
     const source = store.pipe(
