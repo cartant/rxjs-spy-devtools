@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CONTENT_MESSAGE } from '@devtools/constants';
-import { isNotification, isRequest } from '@devtools/guards';
-import { Notification, Request } from '@devtools/interfaces';
+import { isNotification, isPostRequest } from '@devtools/guards';
+import { Notification, Post, Request } from '@devtools/interfaces';
 import { Observable } from 'rxjs/Observable';
 import { filter } from 'rxjs/operators/filter';
 import { share } from 'rxjs/operators/share';
@@ -11,7 +11,8 @@ import { ChromeService } from '../chrome';
 export class SpyService {
 
   public notifications: Observable<Notification>;
-  public requests: Observable<Request>;
+  public posts: Observable<Post>;
+  public requests: Observable<Post & Request>;
 
   constructor(chromeService: ChromeService) {
     this.notifications = chromeService.posts.pipe(
@@ -19,9 +20,13 @@ export class SpyService {
       filter(isNotification),
       share()
     );
+    this.posts = chromeService.posts.pipe(
+      filter(post => post.postType === CONTENT_MESSAGE),
+      share()
+    );
     this.requests = chromeService.posts.pipe(
       filter(post => post.postType === CONTENT_MESSAGE),
-      filter(isRequest),
+      filter(isPostRequest),
       share()
     );
   }

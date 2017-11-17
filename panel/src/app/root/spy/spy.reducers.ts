@@ -3,9 +3,8 @@ import { APP_MAX_NOTIFICATIONS } from '@app/constants';
 import { ObservableSnapshot, SubscriberSnapshot, SubscriptionSnapshot } from '@devtools/interfaces';
 import { createEntityAdapter, EntityState } from '@ngrx/entity';
 import { ActionReducerMap, createFeatureSelector } from '@ngrx/store';
-import { Action } from '@ngrx/store';
 import { on, reducer } from 'ts-action';
-import { Notify } from './spy.actions';
+import { Connect, Disconnect, Notify } from './spy.actions';
 
 export interface Notification {
   id: string;
@@ -23,6 +22,8 @@ const notificationAdapter = createEntityAdapter<Notification>({
   sortComparer: (a, b) => b.timestamp - a.timestamp
 });
 const notificationReducer = reducer<NotificationState>([
+  on(Connect, () => notificationAdapter.getInitialState({})),
+  on(Disconnect, () => notificationAdapter.getInitialState({})),
   on(Notify, (state, { payload }) => {
     const result = notificationAdapter.addOne({
       id: payload.id,
@@ -54,18 +55,24 @@ export const {
 export type ObservableState = EntityState<Partial<ObservableSnapshot>>;
 const observableAdapter = createEntityAdapter<Partial<ObservableSnapshot>>({});
 const observableReducer = reducer<ObservableState>([
+  on(Connect, () => observableAdapter.getInitialState({})),
+  on(Disconnect, () => observableAdapter.getInitialState({})),
   on(Notify, (state, { payload }) => observableAdapter.addOne(payload.observable, state))
 ], observableAdapter.getInitialState({}));
 
 export type SubscriberState = EntityState<Partial<SubscriberSnapshot>>;
 const subscriberAdapter = createEntityAdapter<Partial<SubscriberSnapshot>>({});
 const subscriberReducer = reducer<SubscriberState>([
+  on(Connect, () => subscriberAdapter.getInitialState({})),
+  on(Disconnect, () => subscriberAdapter.getInitialState({})),
   on(Notify, (state, { payload }) => subscriberAdapter.addOne(payload.subscriber, state))
 ], subscriberAdapter.getInitialState({}));
 
 export type SubscriptionState = EntityState<Partial<SubscriptionSnapshot>>;
 const subscriptionAdapter = createEntityAdapter<Partial<SubscriptionSnapshot>>({});
 const subscriptionReducer = reducer<SubscriptionState>([
+  on(Connect, () => subscriptionAdapter.getInitialState({})),
+  on(Disconnect, () => subscriptionAdapter.getInitialState({})),
   on(Notify, (state, { payload }) => subscriptionAdapter.addOne(payload.subscription, state))
 ], subscriptionAdapter.getInitialState({}));
 
