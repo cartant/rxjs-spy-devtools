@@ -4,7 +4,7 @@ import { ObservableSnapshot, SubscriberSnapshot, SubscriptionSnapshot } from '@d
 import { createEntityAdapter, EntityState } from '@ngrx/entity';
 import { ActionReducerMap, createFeatureSelector } from '@ngrx/store';
 import { on, reducer } from 'ts-action';
-import { Connect, Disconnect, Notify } from './spy.actions';
+import { Connect, Disconnect, Notify, SnapshotFulfilled } from './spy.actions';
 
 export interface Notification {
   id: string;
@@ -57,7 +57,8 @@ const observableAdapter = createEntityAdapter<Partial<ObservableSnapshot>>({});
 const observableReducer = reducer<ObservableState>([
   on(Connect, () => observableAdapter.getInitialState({})),
   on(Disconnect, () => observableAdapter.getInitialState({})),
-  on(Notify, (state, { payload }) => observableAdapter.addOne(payload.observable, state))
+  on(Notify, (state, { payload }) => observableAdapter.addOne(payload.observable, state)),
+  on(SnapshotFulfilled, (state, { payload }) => observableAdapter.addMany(payload.observables, observableAdapter.getInitialState({})))
 ], observableAdapter.getInitialState({}));
 
 export type SubscriberState = EntityState<Partial<SubscriberSnapshot>>;
@@ -65,7 +66,8 @@ const subscriberAdapter = createEntityAdapter<Partial<SubscriberSnapshot>>({});
 const subscriberReducer = reducer<SubscriberState>([
   on(Connect, () => subscriberAdapter.getInitialState({})),
   on(Disconnect, () => subscriberAdapter.getInitialState({})),
-  on(Notify, (state, { payload }) => subscriberAdapter.addOne(payload.subscriber, state))
+  on(Notify, (state, { payload }) => subscriberAdapter.addOne(payload.subscriber, state)),
+  on(SnapshotFulfilled, (state, { payload }) => subscriberAdapter.addMany(payload.subscribers, subscriberAdapter.getInitialState({})))
 ], subscriberAdapter.getInitialState({}));
 
 export type SubscriptionState = EntityState<Partial<SubscriptionSnapshot>>;
@@ -73,7 +75,8 @@ const subscriptionAdapter = createEntityAdapter<Partial<SubscriptionSnapshot>>({
 const subscriptionReducer = reducer<SubscriptionState>([
   on(Connect, () => subscriptionAdapter.getInitialState({})),
   on(Disconnect, () => subscriptionAdapter.getInitialState({})),
-  on(Notify, (state, { payload }) => subscriptionAdapter.addOne(payload.subscription, state))
+  on(Notify, (state, { payload }) => subscriptionAdapter.addOne(payload.subscription, state)),
+  on(SnapshotFulfilled, (state, { payload }) => subscriptionAdapter.addMany(payload.subscriptions, subscriptionAdapter.getInitialState({})))
 ], subscriptionAdapter.getInitialState({}));
 
 export interface State {

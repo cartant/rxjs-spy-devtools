@@ -1,22 +1,47 @@
 import { Injectable } from '@angular/core';
 import { MESSAGE_CONNECT, MESSAGE_DISCONNECT } from '@devtools/constants';
 import { Actions, Effect } from '@ngrx/effects';
+import { of } from 'rxjs/observable/of';
+import { catchError } from 'rxjs/operators/catchError';
 import { filter } from 'rxjs/operators/filter';
 import { map } from 'rxjs/operators/map';
-import { Connect, Disconnect, Notify } from './spy.actions';
+import { mergeMap } from 'rxjs/operators/mergeMap';
+import { switchMap } from 'rxjs/operators/switchMap';
+import { ofType } from 'ts-action-operators';
+import { Connect, Disconnect, Notify, Snapshot, SnapshotFulfilled, SnapshotRejected } from './spy.actions';
 import { SpyService } from './spy.service';
 
 @Injectable()
 export class SpyEffects {
 
   @Effect()
-  connect = this._spyService.posts.pipe(filter(post => post.messageType === MESSAGE_CONNECT), map(connect => new Connect()));
+  public connect = this._spyService.posts.pipe(
+    filter(post => post.messageType === MESSAGE_CONNECT),
+    mergeMap(() => [new Connect(), new Snapshot()])
+  );
 
   @Effect()
-  disconnect = this._spyService.posts.pipe(filter(post => post.messageType === MESSAGE_DISCONNECT), map(connect => new Disconnect()));
+  public disconnect = this._spyService.posts.pipe(
+    filter(post => post.messageType === MESSAGE_DISCONNECT),
+    map(() => new Disconnect())
+  );
 
   @Effect()
-  notify = this._spyService.notifications.pipe(map(notification => new Notify(notification)));
+  public notify = this._spyService.notifications.pipe(
+    map(notification => new Notify(notification))
+  );
+
+  @Effect()
+  public snapshot = this._actions.pipe(
+    ofType(Snapshot),
+    switchMap(() => this._spyService.request({ requestType: 'snapshot' }).pipe(
+      map(response => response.error ?
+        new SnapshotRejected(response.error.toString()) :
+        new SnapshotFulfilled(response['snapshot'])
+      ),
+      catchError(error => of(new SnapshotRejected(error.toString())))
+    ))
+  );
 
   constructor(private _spyService: SpyService, private _actions: Actions) {}
 }

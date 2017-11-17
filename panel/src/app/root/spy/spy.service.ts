@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { CONTENT_MESSAGE } from '@devtools/constants';
+import { CONTENT_MESSAGE, MESSAGE_REQUEST } from '@devtools/constants';
 import { isNotification, isPostRequest, isPostResponse } from '@devtools/guards';
-import { Notification, Post, Request, Response } from '@devtools/interfaces';
+import { Message, Notification, Post, Request, Response } from '@devtools/interfaces';
 import { Observable } from 'rxjs/Observable';
 import { filter } from 'rxjs/operators/filter';
-import { take } from 'rxjs/operators/take';
 import { share } from 'rxjs/operators/share';
+import { take } from 'rxjs/operators/take';
 import { ChromeService } from '../chrome';
 
 @Injectable()
@@ -38,8 +38,13 @@ export class SpyService {
     );
   }
 
-  request(request: Request): Observable<Post & Response> {
-    const { postId } = this._chromeService.post(request);
+  post(message: Message): Post {
+    return this._chromeService.post(message);
+  }
+
+  request(request: { requestType: string }): Observable<Post & Response> {
+    const message = { ...request, messageType: MESSAGE_REQUEST };
+    const { postId } = this.post(message);
     return this.responses.pipe(
       filter(response => response.request.postId === postId),
       take(1)
