@@ -34,12 +34,12 @@ export class SpyEffects {
   @Effect()
   public snapshot = this._actions.pipe(
     ofType(Snapshot),
-    switchMap(() => this._spyService.request({ requestType: 'snapshot' }).pipe(
+    switchMap(action => this._spyService.request({ requestType: 'snapshot' }).pipe(
       map(response => response.error ?
-        new SnapshotRejected(response.error.toString()) :
+        new SnapshotRejected(response.error.toString(), action) :
         new SnapshotFulfilled(response['snapshot'])
       ),
-      catchError(error => of(new SnapshotRejected(error.toString())))
+      catchError(error => of(new SnapshotRejected(error.toString(), action)))
     ))
   );
 

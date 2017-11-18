@@ -25,18 +25,18 @@ const notificationAdapter = createEntityAdapter<Notification>({
 const notificationReducer = reducer<NotificationState>([
   on(Connect, () => notificationAdapter.getInitialState({})),
   on(Disconnect, () => notificationAdapter.getInitialState({})),
-  on(Notify, (state, { payload }) => {
+  on(Notify, (state, { notification }) => {
     const result = notificationAdapter.addOne({
-      id: payload.id,
-      notification: payload.notification,
-      observable: payload.observable.id,
-      subscriber: payload.subscriber.id,
-      subscription: payload.subscription.id,
-      tag: payload.observable.tag,
-      tick: payload.tick,
-      timestamp: payload.timestamp,
-      type: payload.observable.type,
-      value: payload.value
+      id: notification.id,
+      notification: notification.notification,
+      observable: notification.observable.id,
+      subscriber: notification.subscriber.id,
+      subscription: notification.subscription.id,
+      tag: notification.observable.tag,
+      tick: notification.tick,
+      timestamp: notification.timestamp,
+      type: notification.observable.type,
+      value: notification.value
     }, state);
     if (result.ids.length > APP_MAX_NOTIFICATIONS) {
       (result.ids as string[])
@@ -59,8 +59,12 @@ const observableAdapter = createEntityAdapter<Partial<ObservableSnapshot>>({});
 const observableReducer = reducer<ObservableState>([
   on(Connect, () => observableAdapter.getInitialState({})),
   on(Disconnect, () => observableAdapter.getInitialState({})),
-  on(Notify, (state, { payload }) => observableAdapter.addOne(payload.observable, state)),
-  on(SnapshotFulfilled, (state, { payload }) => observableAdapter.addMany(payload.observables, observableAdapter.getInitialState({})))
+  on(Notify, (state, { notification }) =>
+    observableAdapter.addOne(notification.observable, state)
+  ),
+  on(SnapshotFulfilled, (state, { snapshot }) =>
+    observableAdapter.addMany(snapshot.observables, observableAdapter.getInitialState({}))
+  )
 ], observableAdapter.getInitialState({}));
 
 export const selectObservableState = createFeatureSelector<ObservableState>('observables');
@@ -75,8 +79,12 @@ const subscriberAdapter = createEntityAdapter<Partial<SubscriberSnapshot>>({});
 const subscriberReducer = reducer<SubscriberState>([
   on(Connect, () => subscriberAdapter.getInitialState({})),
   on(Disconnect, () => subscriberAdapter.getInitialState({})),
-  on(Notify, (state, { payload }) => subscriberAdapter.addOne(payload.subscriber, state)),
-  on(SnapshotFulfilled, (state, { payload }) => subscriberAdapter.addMany(payload.subscribers, subscriberAdapter.getInitialState({})))
+  on(Notify, (state, { notification }) =>
+    subscriberAdapter.addOne(notification.subscriber, state)
+  ),
+  on(SnapshotFulfilled, (state, { snapshot }) =>
+    subscriberAdapter.addMany(snapshot.subscribers, subscriberAdapter.getInitialState({}))
+  )
 ], subscriberAdapter.getInitialState({}));
 
 export const selectSubscriberState = createFeatureSelector<SubscriberState>('subscribers');
@@ -91,8 +99,12 @@ const subscriptionAdapter = createEntityAdapter<Partial<SubscriptionSnapshot>>({
 const subscriptionReducer = reducer<SubscriptionState>([
   on(Connect, () => subscriptionAdapter.getInitialState({})),
   on(Disconnect, () => subscriptionAdapter.getInitialState({})),
-  on(Notify, (state, { payload }) => subscriptionAdapter.addOne(payload.subscription, state)),
-  on(SnapshotFulfilled, (state, { payload }) => subscriptionAdapter.addMany(payload.subscriptions, subscriptionAdapter.getInitialState({})))
+  on(Notify, (state, { notification }) =>
+    subscriptionAdapter.addOne(notification.subscription, state)
+  ),
+  on(SnapshotFulfilled, (state, { snapshot }) =>
+    subscriptionAdapter.addMany(snapshot.subscriptions, subscriptionAdapter.getInitialState({}))
+  )
 ], subscriptionAdapter.getInitialState({}));
 
 export const selectSubscriptionState = createFeatureSelector<SubscriptionState>('subscriptions');
