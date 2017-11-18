@@ -63,6 +63,13 @@ const observableReducer = reducer<ObservableState>([
   on(SnapshotFulfilled, (state, { payload }) => observableAdapter.addMany(payload.observables, observableAdapter.getInitialState({})))
 ], observableAdapter.getInitialState({}));
 
+export const selectObservableState = createFeatureSelector<ObservableState>('observables');
+export const {
+  selectIds: selectObservableIds,
+  selectEntities: selectObservableEntities,
+  selectAll: selectAllObservables
+} = observableAdapter.getSelectors(selectObservableState);
+
 export type SubscriberState = EntityState<Partial<SubscriberSnapshot>>;
 const subscriberAdapter = createEntityAdapter<Partial<SubscriberSnapshot>>({});
 const subscriberReducer = reducer<SubscriberState>([
@@ -72,6 +79,13 @@ const subscriberReducer = reducer<SubscriberState>([
   on(SnapshotFulfilled, (state, { payload }) => subscriberAdapter.addMany(payload.subscribers, subscriberAdapter.getInitialState({})))
 ], subscriberAdapter.getInitialState({}));
 
+export const selectSubscriberState = createFeatureSelector<SubscriberState>('subscribers');
+export const {
+  selectIds: selectSubscriberIds,
+  selectEntities: selectSubscriberEntities,
+  selectAll: selectAllSubscribers
+} = subscriberAdapter.getSelectors(selectSubscriberState);
+
 export type SubscriptionState = EntityState<Partial<SubscriptionSnapshot>>;
 const subscriptionAdapter = createEntityAdapter<Partial<SubscriptionSnapshot>>({});
 const subscriptionReducer = reducer<SubscriptionState>([
@@ -80,6 +94,13 @@ const subscriptionReducer = reducer<SubscriptionState>([
   on(Notify, (state, { payload }) => subscriptionAdapter.addOne(payload.subscription, state)),
   on(SnapshotFulfilled, (state, { payload }) => subscriptionAdapter.addMany(payload.subscriptions, subscriptionAdapter.getInitialState({})))
 ], subscriptionAdapter.getInitialState({}));
+
+export const selectSubscriptionState = createFeatureSelector<SubscriptionState>('subscriptions');
+export const {
+  selectIds: selectSubscriptionIds,
+  selectEntities: selectSubscriptionEntities,
+  selectAll: selectAllSubscriptions
+} = subscriptionAdapter.getSelectors(selectSubscriptionState);
 
 export interface State {
   notifications: NotificationState;
