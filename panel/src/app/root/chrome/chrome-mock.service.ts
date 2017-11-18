@@ -103,20 +103,22 @@ export class ChromeMockService {
       postId: '0',
       postType: PANEL_MESSAGE
     };
-    if (message.messageType === MESSAGE_REQUEST) {
-      const request = {
-        messageType: MESSAGE_RESPONSE,
-        postId: '1',
-        postType: CONTENT_MESSAGE,
-        request: { ...message, ...post },
-        snapshot: {
-          observables: [this.observable_],
-          subscribers: [this.subscriber_],
-          subscriptions: [this.subscription_]
-        }
-      };
-      setTimeout(() => this.subject_.next(request), 100);
-    }
+    setTimeout(() => {
+      if (message.messageType === MESSAGE_REQUEST) {
+        const request = {
+          messageType: MESSAGE_RESPONSE,
+          postId: '1',
+          postType: CONTENT_MESSAGE,
+          request: { ...message, ...post },
+          snapshot: {
+            observables: [this.observable_],
+            subscribers: [this.subscriber_],
+            subscriptions: [this.subscription_]
+          }
+        };
+        this.subject_.next(request);
+      }
+    }, 0);
     return post;
   }
 }

@@ -25,7 +25,7 @@ window.addEventListener("message", event => {
 
 backgroundConnection.onMessage.addListener(message => {
     const { postType } = message as Post;
-    if (postType === "panel-message") {
+    if (postType === PANEL_MESSAGE) {
         window.postMessage({ ...message, source: "rx-spy-devtools-panel" }, "*");
     }
 });

@@ -36,6 +36,10 @@
       <mat-header-cell *matHeaderCellDef> Type </mat-header-cell>
       <mat-cell *matCellDef="let row"> {{ row.type }} </mat-cell>
     </ng-container>
+    <ng-container matColumnDef="log">
+      <mat-header-cell *matHeaderCellDef> Log </mat-header-cell>
+      <mat-cell *matCellDef="let row" (click)="log(row.id)"> Log </mat-cell>
+    </ng-container>
     <mat-header-row *matHeaderRowDef="observableDisplayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: observableDisplayedColumns;"></mat-row>
   </mat-table>

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { Notification, selectAllNotifications, selectAllObservables, State } from '@app/root/spy';
+import { Notification, selectAllNotifications, selectAllObservables, SpyService, State } from '@app/root/spy';
 import { DataSource } from '@app/shared/utils';
 import { ObservableSnapshot } from '@devtools/interfaces';
 import { Store } from '@ngrx/store';
@@ -18,9 +18,9 @@ export class AppComponent {
   public notificationDataSource: DataSource<Notification>;
   public notificationDisplayedColumns = ['id', 'notification', 'tag', 'type', 'value'];
   public observableDataSource: DataSource<Partial<ObservableSnapshot>>;
-  public observableDisplayedColumns = ['id', 'tag', 'type'];
+  public observableDisplayedColumns = ['id', 'tag', 'type', 'log'];
 
-  constructor(store: Store<State>) {
+  constructor(private _spyService: SpyService, store: Store<State>) {
     this.notificationDataSource = new DataSource(store.pipe(
       map(selectAllNotifications),
       auditTime(APP_AUDIT_TIME)
@@ -29,5 +29,13 @@ export class AppComponent {
       map(selectAllObservables),
       auditTime(APP_AUDIT_TIME)
     ));
+  }
+
+  log(id: string): void {
+    const request = {
+      match: id,
+      requestType: 'log'
+    };
+    this._spyService.request(request);
   }
 }

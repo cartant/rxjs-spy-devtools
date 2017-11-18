@@ -43,8 +43,9 @@ export class ChromeService {
   }
 
   post(message: Message): Post {
-    const post = { ...message, postId: (++ChromeService._posts).toString(), postType: PANEL_MESSAGE };
-    this._backgroundConnection.postMessage(post);
+    const tabId = chrome.devtools.inspectedWindow.tabId;
+    const post = { ...message, postId: (++ChromeService._posts).toString(), postType: PANEL_MESSAGE, tabId };
+    setTimeout(() => this._backgroundConnection.postMessage(post), 0);
     return post;
   }
 }
