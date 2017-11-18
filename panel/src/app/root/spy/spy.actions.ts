@@ -9,12 +9,16 @@ function deckBase() {
   return base(class { constructor(public pluginId: string, public deck: string) {} });
 }
 
-function matchBase() {
-  return base(class { constructor(public match: string) {} });
+function pluginFulfilledBase() {
+  return base(class { constructor(public id: string, public pluginId: string) {} });
 }
 
 function pluginIdBase() {
   return base(class { constructor(public pluginId: string) {} });
+}
+
+function pluginRequestedBase() {
+  return base(class { constructor(public id: string) {} });
 }
 
 export const Connect = action('[Spy] CONNECT');
@@ -40,8 +44,8 @@ export const DeckStep = action('[Spy] DECK_STEP', deckBase());
 export const DeckStepFulfilled = action('[Spy] DECK_STEP_FULFILLED', deckBase());
 export const DeckStepRejected = action('[Spy] DECK_STEP_REJECTED', errorBase(DeckStep));
 
-export const Log = action('[Spy] LOG', matchBase());
-export const LogFulfilled = action('[Spy] LOG_FULFILLED', pluginIdBase());
+export const Log = action('[Spy] LOG', pluginRequestedBase());
+export const LogFulfilled = action('[Spy] LOG_FULFILLED', pluginFulfilledBase());
 export const LogRejected = action('[Spy] LOG_REJECTED', errorBase(Log));
 
 export const LogTeardown = action('[Spy] LOG_TEARDOWN', pluginIdBase());
@@ -50,8 +54,8 @@ export const LogTeardownRejected = action('[Spy] LOG_TEARDOWN_REJECTED', errorBa
 
 export const Notify = action('[Spy] NOTIFY', base(class { constructor(public notification: Notification) {} }));
 
-export const Pause = action('[Spy] PAUSE', matchBase());
-export const PauseFulfilled = action('[Spy] PAUSE_FULFILLED', pluginIdBase());
+export const Pause = action('[Spy] PAUSE', pluginRequestedBase());
+export const PauseFulfilled = action('[Spy] PAUSE_FULFILLED', pluginFulfilledBase());
 export const PauseRejected = action('[Spy] PAUSE_REJECTED', errorBase(Pause));
 
 export const PauseTeardown = action('[Spy] PAUSE_TEARDOWN', pluginIdBase());
