@@ -74,11 +74,11 @@ export class ChromeMockService {
           id: counter.toString(),
           messageType: MESSAGE_NOTIFICATION,
           notification: 'before-next',
-          observable: pluck(this.observable_, 'id', 'tag', 'type'),
+          observable: pick(this.observable_, 'id', 'tag', 'type'),
           postId: counter.toString(),
           postType: CONTENT_MESSAGE,
-          subscriber: pluck(this.subscriber_, 'id'),
-          subscription: pluck(this.subscription_, 'graph', 'id', 'stackTrace'),
+          subscriber: pick(this.subscriber_, 'id'),
+          subscription: pick(this.subscription_, 'graph', 'id', 'stackTrace'),
           tick: counter,
           timestamp: Date.now(),
           value: { json: JSON.stringify(counter) }
@@ -123,8 +123,8 @@ export class ChromeMockService {
   }
 }
 
-function pluck(value: object, ...props: string[]): any {
-  const plucked: any = {};
-  props.forEach(prop => plucked[prop] = value[prop]);
-  return plucked;
+function pick<T, K extends keyof T>(value: T, ...keys: K[]): Pick<T, K> {
+  const picked: any = {};
+  keys.forEach(key => picked[key] = value[key]);
+  return picked;
 }
