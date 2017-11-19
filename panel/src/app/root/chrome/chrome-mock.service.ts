@@ -42,6 +42,7 @@ export class ChromeMockService {
 
     this.observable_ = {
       id: '1',
+      path: '/interval',
       subscriptions: ['3'],
       tag: 'mock',
       tick: 0,
