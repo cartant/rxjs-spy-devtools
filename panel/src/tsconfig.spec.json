@@ -5,9 +5,9 @@
     "module": "commonjs",
     "outDir": "../out-tsc/spec",
     "paths": {
-      "@app/*": ["app/*"],
+      "@app/*": ["./app/*"],
       "@devtools/*": ["../../extension/node_modules/rxjs-spy/devtools/*"],
-      "@env/*": ["environments/*"]
+      "@env/*": ["./environments/*"]
     },
     "target": "es5",
     "types": [

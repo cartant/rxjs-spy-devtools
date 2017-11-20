@@ -1,6 +1,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "baseUrl": "./src",
     "declaration": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
@@ -10,6 +11,11 @@
     ],
     "moduleResolution": "node",
     "outDir": "./dist/out-tsc",
+    "paths": {
+      "@app/*": ["./app/*"],
+      "@devtools/*": ["../../extension/node_modules/rxjs-spy/devtools/*"],
+      "@env/*": ["./environments/*"]
+    },
     "sourceMap": true,
     "target": "es5",
     "typeRoots": [
