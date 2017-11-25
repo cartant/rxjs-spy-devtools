@@ -20,6 +20,7 @@ export interface Notification {
 }
 export type NotificationState = EntityState<Notification>;
 const notificationAdapter = createEntityAdapter<Notification>({
+  selectId: (entity: Notification) => entity.id,
   sortComparer: (a, b) => b.timestamp - a.timestamp
 });
 const notificationReducer = reducer<NotificationState>([
@@ -55,13 +56,23 @@ export const {
 } = notificationAdapter.getSelectors(selectNotificationState);
 
 export type ObservableState = EntityState<Partial<ObservableSnapshot>>;
-const observableAdapter = createEntityAdapter<Partial<ObservableSnapshot>>({});
+const observableAdapter = createEntityAdapter<Partial<ObservableSnapshot>>({
+  selectId: entity => entity.id
+});
 const observableReducer = reducer<ObservableState>([
   on(Connect, () => observableAdapter.getInitialState({})),
   on(Disconnect, () => observableAdapter.getInitialState({})),
-  on(Notify, (state, { notification }) =>
-    observableAdapter.addOne(notification.observable, state)
-  ),
+  on(Notify, (state, { notification }) => {
+    const id = notification.observable.id;
+    const previous = state.entities[id];
+    const changes = {
+      ...notification.observable,
+      tick: notification.tick
+    };
+    return previous ?
+      observableAdapter.updateOne({ id, changes }, state) :
+      observableAdapter.addOne(changes, state);
+  }),
   on(SnapshotFulfilled, (state, { snapshot }) =>
     observableAdapter.addMany(snapshot.observables, observableAdapter.getInitialState({}))
   )
@@ -75,13 +86,34 @@ export const {
 } = observableAdapter.getSelectors(selectObservableState);
 
 export type SubscriberState = EntityState<Partial<SubscriberSnapshot>>;
-const subscriberAdapter = createEntityAdapter<Partial<SubscriberSnapshot>>({});
+const subscriberAdapter = createEntityAdapter<Partial<SubscriberSnapshot>>({
+  selectId: entity => entity.id
+});
 const subscriberReducer = reducer<SubscriberState>([
   on(Connect, () => subscriberAdapter.getInitialState({})),
   on(Disconnect, () => subscriberAdapter.getInitialState({})),
-  on(Notify, (state, { notification }) =>
-    subscriberAdapter.addOne(notification.subscriber, state)
-  ),
+  on(Notify, (state, { notification }) => {
+    const id = notification.subscriber.id;
+    const previous = state.entities[id];
+    const value = {
+      tick: notification.tick,
+      timestamp: notification.timestamp,
+      value: notification.value
+    };
+    const changes = {
+      ...notification.subscriber,
+      tick: notification.tick,
+      values: previous ? [...previous.values, value] : [value],
+      valuesFlushed: previous ? previous.valuesFlushed : 0
+    };
+    if (changes.values.length > 4) {
+      changes.values.splice(0, 1);
+      changes.valuesFlushed += 1;
+    }
+    return previous ?
+      subscriberAdapter.updateOne({ id, changes }, state) :
+      subscriberAdapter.addOne(changes, state);
+  }),
   on(SnapshotFulfilled, (state, { snapshot }) =>
     subscriberAdapter.addMany(snapshot.subscribers, subscriberAdapter.getInitialState({}))
   )
@@ -95,13 +127,23 @@ export const {
 } = subscriberAdapter.getSelectors(selectSubscriberState);
 
 export type SubscriptionState = EntityState<Partial<SubscriptionSnapshot>>;
-const subscriptionAdapter = createEntityAdapter<Partial<SubscriptionSnapshot>>({});
+const subscriptionAdapter = createEntityAdapter<Partial<SubscriptionSnapshot>>({
+  selectId: entity => entity.id
+});
 const subscriptionReducer = reducer<SubscriptionState>([
   on(Connect, () => subscriptionAdapter.getInitialState({})),
   on(Disconnect, () => subscriptionAdapter.getInitialState({})),
-  on(Notify, (state, { notification }) =>
-    subscriptionAdapter.addOne(notification.subscription, state)
-  ),
+  on(Notify, (state, { notification }) => {
+    const id = notification.subscription.id;
+    const previous = state.entities[id];
+    const changes = {
+      ...notification.subscription,
+      tick: notification.tick
+    };
+    return previous ?
+      subscriptionAdapter.updateOne({ id, changes }, state) :
+      subscriptionAdapter.addOne(changes, state);
+  }),
   on(SnapshotFulfilled, (state, { snapshot }) =>
     subscriptionAdapter.addMany(snapshot.subscriptions, subscriptionAdapter.getInitialState({}))
   )
