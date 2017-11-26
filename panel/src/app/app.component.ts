@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { APP_AUDIT_TIME } from '@app/constants';
 import { Notification, selectAllNotifications, selectAllObservables, SpyService, State } from '@app/root/spy';
 import { DataSource } from '@app/shared/utils';
 import { ObservableSnapshot } from '@devtools/interfaces';
 import { Store } from '@ngrx/store';
 import { auditTime } from 'rxjs/operators/auditTime';
 import { map } from 'rxjs/operators/map';
-import { APP_AUDIT_TIME } from '@app/constants';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
