@@ -2,7 +2,7 @@ import { SubscriberSnapshot } from '@devtools/interfaces';
 import { createEntityAdapter, EntityState } from '@ngrx/entity';
 import { createFeatureSelector } from '@ngrx/store';
 import { on, reducer } from 'ts-action';
-import { Connect, Disconnect, Notify, SnapshotFulfilled } from '../shared/shared.actions';
+import { Connect, Disconnect, Notify, SnapshotFulfilled } from '../service/service.actions';
 
 export type SubscriberState = EntityState<Partial<SubscriberSnapshot>>;
 

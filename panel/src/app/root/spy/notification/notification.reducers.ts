@@ -2,7 +2,7 @@ import { APP_MAX_NOTIFICATIONS } from '@app/constants';
 import { createEntityAdapter, EntityState } from '@ngrx/entity';
 import { createFeatureSelector } from '@ngrx/store';
 import { on, reducer } from 'ts-action';
-import { Connect, Disconnect, Notify } from '../shared/shared.actions';
+import { Connect, Disconnect, Notify } from '../service/service.actions';
 
 export interface Notification {
   id: string;
