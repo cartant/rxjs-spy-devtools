@@ -2,17 +2,21 @@ import { InjectionToken, Provider } from '@angular/core';
 import { ActionReducerMap } from '@ngrx/store';
 import { Notification, notificationReducer, NotificationState } from './notification/notification.reducers';
 import { observableReducer, ObservableState } from './observable/observable.reducers';
+import { logPluginReducer, LogPluginState, pausePluginReducer, PausePluginState } from './plugin/plugin.reducers';
 import { subscriberReducer, SubscriberState } from './subscriber/subscriber.reducers';
 import { subscriptionReducer, SubscriptionState } from './subscription/subscription.reducers';
 
 export * from './notification/notification.reducers';
 export * from './observable/observable.reducers';
+export * from './plugin/plugin.reducers';
 export * from './subscriber/subscriber.reducers';
 export * from './subscription/subscription.reducers';
 
 export interface State {
+  logPlugins: LogPluginState;
   notifications: NotificationState;
   observables: ObservableState;
+  pausePlugins: PausePluginState;
   subscribers: SubscriberState;
   subscriptions: SubscriptionState;
 }
@@ -21,8 +25,10 @@ export const REDUCERS_TOKEN = new InjectionToken<ActionReducerMap<State>>('REDUC
 
 export function getReducers(): ActionReducerMap<State> {
   return {
+    logPlugins: logPluginReducer,
     notifications: notificationReducer,
     observables: observableReducer,
+    pausePlugins: pausePluginReducer,
     subscribers: subscriberReducer,
     subscriptions: subscriptionReducer
   };
