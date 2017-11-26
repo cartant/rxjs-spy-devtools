@@ -32,10 +32,9 @@ export class AppComponent {
   }
 
   log(id: string): void {
-    const request = {
+    this._spyService.request({
       match: id,
       requestType: 'log'
-    };
-    this._spyService.request(request);
+    });
   }
 }

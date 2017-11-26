@@ -42,7 +42,7 @@ export class SpyService {
     return this._chromeService.post(message);
   }
 
-  request(request: { requestType: string }): Observable<Post & Response> {
+  request(request: { [key: string]: any; requestType: string }): Observable<Post & Response> {
     const message = { ...request, messageType: MESSAGE_REQUEST };
     const { postId } = this.post(message);
     return this.responses.pipe(

@@ -8,7 +8,7 @@ import { map } from 'rxjs/operators/map';
 import { mergeMap } from 'rxjs/operators/mergeMap';
 import { switchMap } from 'rxjs/operators/switchMap';
 import { ofType } from 'ts-action-operators';
-import { Connect, Disconnect, Notify, Snapshot, SnapshotFulfilled, SnapshotRejected } from './service.actions';
+import * as ServiceActions from './service.actions';
 import { SpyService } from '../spy.service';
 
 @Injectable()
@@ -17,29 +17,29 @@ export class ServiceEffects {
   @Effect()
   public connect = this._spyService.posts.pipe(
     filter(post => post.messageType === MESSAGE_CONNECT),
-    mergeMap(() => [new Connect(), new Snapshot()])
+    mergeMap(() => [new ServiceActions.Connect(), new ServiceActions.Snapshot()])
   );
 
   @Effect()
   public disconnect = this._spyService.posts.pipe(
     filter(post => post.messageType === MESSAGE_DISCONNECT),
-    map(() => new Disconnect())
+    map(() => new ServiceActions.Disconnect())
   );
 
   @Effect()
   public notify = this._spyService.notifications.pipe(
-    map(notification => new Notify(notification))
+    map(notification => new ServiceActions.Notify(notification))
   );
 
   @Effect()
   public snapshot = this._actions.pipe(
-    ofType(Snapshot),
+    ofType(ServiceActions.Snapshot),
     switchMap(action => this._spyService.request({ requestType: 'snapshot' }).pipe(
       map(response => response.error ?
-        new SnapshotRejected(response.error.toString(), action) :
-        new SnapshotFulfilled(response['snapshot'])
+        new ServiceActions.SnapshotRejected(response.error.toString(), action) :
+        new ServiceActions.SnapshotFulfilled(response['snapshot'])
       ),
-      catchError(error => of(new SnapshotRejected(error.toString(), action)))
+      catchError(error => of(new ServiceActions.SnapshotRejected(error.toString(), action)))
     ))
   );
 
