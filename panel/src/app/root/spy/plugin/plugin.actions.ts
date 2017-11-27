@@ -2,15 +2,15 @@ import { errorBase } from '@app/shared/utils';
 import { action, base, Ctor } from 'ts-action';
 
 function IdBase() {
-  return base(class { constructor(public id: string) {} });
+  return base(class { constructor(public spyId: string) {} });
 }
 
 function pluginIdCommandBase() {
-  return base(class { constructor(public pluginId: string, public command: string) {} });
+  return base(class { constructor(public spyId: string, public pluginId: string, public command: string) {} });
 }
 
 function pluginIdBase() {
-  return base(class { constructor(public pluginId: string) {} });
+  return base(class { constructor(public spyId: string, public pluginId: string) {} });
 }
 
 export const Log = action('[Spy] LOG', IdBase());

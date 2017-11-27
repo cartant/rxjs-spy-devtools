@@ -15,12 +15,12 @@ export class PluginEffects {
   public log = this._actions.pipe(
     ofType(PluginActions.Log),
     switchMap(action => this._spyService.request({
-      match: action.id,
+      match: action.spyId,
       requestType: 'log'
     }).pipe(
       map(response => response.error ?
         new PluginActions.LogRejected(response.error.toString(), action) :
-        new PluginActions.LogFulfilled(response['pluginId'])
+        new PluginActions.LogFulfilled(action.spyId, response['pluginId'])
       ),
       catchError(error => of(new PluginActions.LogRejected(error.toString(), action)))
     ))
@@ -35,7 +35,7 @@ export class PluginEffects {
     }).pipe(
       map(response => response.error ?
         new PluginActions.LogTeardownRejected(response.error.toString(), action) :
-        new PluginActions.LogTeardownFulfilled(response['pluginId'])
+        new PluginActions.LogTeardownFulfilled(action.spyId, response['pluginId'])
       ),
       catchError(error => of(new PluginActions.LogTeardownRejected(error.toString(), action)))
     ))
@@ -45,12 +45,12 @@ export class PluginEffects {
   public pause = this._actions.pipe(
     ofType(PluginActions.Pause),
     switchMap(action => this._spyService.request({
-      match: action.id,
+      match: action.spyId,
       requestType: 'pause'
     }).pipe(
       map(response => response.error ?
         new PluginActions.PauseRejected(response.error.toString(), action) :
-        new PluginActions.PauseFulfilled(response['pluginId'])
+        new PluginActions.PauseFulfilled(action.spyId, response['pluginId'])
       ),
       catchError(error => of(new PluginActions.PauseRejected(error.toString(), action)))
     ))
@@ -66,7 +66,7 @@ export class PluginEffects {
     }).pipe(
       map(response => response.error ?
         new PluginActions.PauseCommandRejected(response.error.toString(), action) :
-        new PluginActions.PauseCommandFulfilled(response['pluginId'], action.command)
+        new PluginActions.PauseCommandFulfilled(action.spyId, response['pluginId'], action.command)
       ),
       catchError(error => of(new PluginActions.PauseCommandRejected(error.toString(), action)))
     ))
@@ -81,7 +81,7 @@ export class PluginEffects {
     }).pipe(
       map(response => response.error ?
         new PluginActions.PauseTeardownRejected(response.error.toString(), action) :
-        new PluginActions.PauseTeardownFulfilled(response['pluginId'])
+        new PluginActions.PauseTeardownFulfilled(action.spyId, response['pluginId'])
       ),
       catchError(error => of(new PluginActions.PauseTeardownRejected(error.toString(), action)))
     ))

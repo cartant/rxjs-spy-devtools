@@ -4,22 +4,33 @@ import { on, reducer } from 'ts-action';
 import * as PluginActions from './plugin.actions';
 
 export interface LogPlugin {
-  pluginId: string;
+  fulfilled: boolean;
+  pluginId?: string;
+  spyId: string;
   timestamp: number;
 }
 export type LogPluginState = EntityState<LogPlugin>;
 
 export const logPluginAdapter = createEntityAdapter<LogPlugin>({
-  selectId: (entity: LogPlugin) => entity.pluginId,
+  selectId: (entity: LogPlugin) => entity.spyId,
   sortComparer: (a, b) => b.timestamp - a.timestamp
 });
 
 export const logPluginReducer = reducer<LogPluginState>([
-  on(PluginActions.LogFulfilled, (state, { pluginId }) => logPluginAdapter.addOne({
-    pluginId,
+  on(PluginActions.Log, (state, { spyId }) => logPluginAdapter.addOne({
+    fulfilled: false,
+    spyId,
     timestamp: Date.now()
   }, state)),
-  on(PluginActions.LogTeardownFulfilled, (state, { pluginId }) => logPluginAdapter.removeOne(pluginId, state))
+  on(PluginActions.LogFulfilled, (state, { pluginId, spyId }) => logPluginAdapter.updateOne({
+    id: spyId,
+    changes: { fulfilled: true, pluginId }
+  }, state)),
+  on(PluginActions.LogTeardown, (state, { spyId }) => logPluginAdapter.updateOne({
+    id: spyId,
+    changes: { fulfilled: false }
+  }, state)),
+  on(PluginActions.LogTeardownFulfilled, (state, { spyId }) => logPluginAdapter.removeOne(spyId, state))
 ], logPluginAdapter.getInitialState({}));
 
 export const selectLogPluginState = createFeatureSelector<LogPluginState>('logPlugins');
@@ -30,27 +41,49 @@ export const {
 } = logPluginAdapter.getSelectors(selectLogPluginState);
 
 export interface PausePlugin {
-  pluginId: string;
+  fulfilled: boolean;
+  pluginId?: string;
+  spyId: string;
   state: 'paused' | 'resumed';
   timestamp: number;
 }
 export type PausePluginState = EntityState<PausePlugin>;
 
 export const pausePluginAdapter = createEntityAdapter<PausePlugin>({
-  selectId: (entity: PausePlugin) => entity.pluginId,
+  selectId: (entity: PausePlugin) => entity.spyId,
   sortComparer: (a, b) => b.timestamp - a.timestamp
 });
 
 export const pausePluginReducer = reducer<PausePluginState>([
-  on(PluginActions.PauseFulfilled, (state, { pluginId }) => pausePluginAdapter.addOne({
-    pluginId,
+  on(PluginActions.PauseFulfilled, (state, { spyId }) => pausePluginAdapter.addOne({
+    fulfilled: false,
+    spyId,
     state: 'paused',
     timestamp: Date.now()
   }, state)),
-  on(PluginActions.PauseCommandFulfilled, (state) => state),
-  // commands: clear; pause; resume; skip; step
-  // states: paused; resumed
-  on(PluginActions.PauseTeardownFulfilled, (state, { pluginId }) => pausePluginAdapter.removeOne(pluginId, state))
+  on(PluginActions.PauseFulfilled, (state, { pluginId, spyId }) => pausePluginAdapter.updateOne({
+    id: spyId,
+    changes: { fulfilled: true, pluginId }
+  }, state)),
+  on(PluginActions.PauseCommand, (state, { spyId }) => pausePluginAdapter.updateOne({
+    id: spyId,
+    changes: { fulfilled: false }
+  }, state)),
+  on(PluginActions.PauseCommandFulfilled, (state, { command, pluginId }) => {
+    switch (command) {
+    case 'pause':
+      return pausePluginAdapter.updateOne({ id: pluginId, changes: { state: 'paused' } }, state);
+    case 'resume':
+      return pausePluginAdapter.updateOne({ id: pluginId, changes: { state: 'resumed' } }, state);
+    default:
+      return state;
+    }
+  }),
+  on(PluginActions.PauseTeardown, (state, { spyId }) => pausePluginAdapter.updateOne({
+    id: spyId,
+    changes: { fulfilled: false }
+  }, state)),
+  on(PluginActions.PauseTeardownFulfilled, (state, { spyId }) => pausePluginAdapter.removeOne(spyId, state))
 ], pausePluginAdapter.getInitialState({}));
 
 export const selectPausePluginState = createFeatureSelector<PausePluginState>('pausePlugins');
