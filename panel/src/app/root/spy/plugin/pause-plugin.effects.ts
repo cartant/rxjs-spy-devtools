@@ -9,37 +9,7 @@ import * as PluginActions from './plugin.actions';
 import { SpyService } from '../spy.service';
 
 @Injectable()
-export class PluginEffects {
-
-  @Effect()
-  public log = this._actions.pipe(
-    ofType(PluginActions.Log),
-    switchMap(action => this._spyService.request({
-      match: action.spyId,
-      requestType: 'log'
-    }).pipe(
-      map(response => response.error ?
-        new PluginActions.LogRejected(response.error.toString(), action) :
-        new PluginActions.LogFulfilled(action.spyId, response['pluginId'])
-      ),
-      catchError(error => of(new PluginActions.LogRejected(error.toString(), action)))
-    ))
-  );
-
-  @Effect()
-  public logTeardown = this._actions.pipe(
-    ofType(PluginActions.LogTeardown),
-    switchMap(action => this._spyService.request({
-      pluginId: action.pluginId,
-      requestType: 'log-teardown'
-    }).pipe(
-      map(response => response.error ?
-        new PluginActions.LogTeardownRejected(response.error.toString(), action) :
-        new PluginActions.LogTeardownFulfilled(action.spyId, response['pluginId'])
-      ),
-      catchError(error => of(new PluginActions.LogTeardownRejected(error.toString(), action)))
-    ))
-  );
+export class PausePluginEffects {
 
   @Effect()
   public pause = this._actions.pipe(
