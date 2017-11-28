@@ -1,0 +1,15 @@
+<!-- #group="group" -->
+<mat-button-toggle-group>
+  <mat-button-toggle (change)="pause()" value="resumed">
+    <mat-icon>pause</mat-icon>
+  </mat-button-toggle>
+  <mat-button-toggle (change)="resume()" value="paused">
+    <mat-icon>play_arrow</mat-icon>
+  </mat-button-toggle>
+</mat-button-toggle-group>
+<button (click)="step()" [disabled]="false" mat-icon-button>
+  <mat-icon>navigate_next</mat-icon>
+</button>
+<button (click)="skip()" [disabled]="false" mat-icon-button>
+  <mat-icon>redo</mat-icon>
+</button>

@@ -18,7 +18,7 @@ export class AppComponent {
   public notificationDataSource: DataSource<Notification>;
   public notificationDisplayedColumns = ['id', 'notification', 'tag', 'type', 'value'];
   public observableDataSource: DataSource<Partial<ObservableSnapshot>>;
-  public observableDisplayedColumns = ['id', 'tag', 'type', 'log'];
+  public observableDisplayedColumns = ['id', 'tag', 'type', 'log', 'pause'];
 
   constructor(private store_: Store<State>) {
     this.notificationDataSource = new DataSource(store_.pipe(
@@ -29,9 +29,5 @@ export class AppComponent {
       map(selectAllObservables),
       auditTime(APP_AUDIT_TIME)
     ));
-  }
-
-  log(id: string): void {
-    this.store_.dispatch(new Log(id));
   }
 }

@@ -38,7 +38,11 @@
     </ng-container>
     <ng-container matColumnDef="log">
       <mat-header-cell *matHeaderCellDef> Log </mat-header-cell>
-      <mat-cell *matCellDef="let row" (click)="log(row.id)"> Log </mat-cell>
+      <mat-cell *matCellDef="let row"><app-log></app-log></mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="pause">
+      <mat-header-cell *matHeaderCellDef> Pause </mat-header-cell>
+      <mat-cell *matCellDef="let row"><app-pause></app-pause></mat-cell>
     </ng-container>
     <mat-header-row *matHeaderRowDef="observableDisplayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: observableDisplayedColumns;"></mat-row>
