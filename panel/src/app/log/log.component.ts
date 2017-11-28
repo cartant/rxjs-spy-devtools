@@ -5,7 +5,6 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { first } from 'rxjs/operators/first';
 import { map } from 'rxjs/operators/map';
-import { isType } from 'ts-action';
 
 @Component({
   selector: 'app-log',
@@ -22,10 +21,10 @@ export class LogComponent implements OnInit {
 
   ngOnInit() {
     this.checked = this._plugin().pipe(
-      map(plugin => Boolean(plugin && (!plugin.request || isType(plugin.request, Log))))
+      map(plugin => Boolean(plugin && plugin.logging))
     );
     this.indeterminate = this._plugin().pipe(
-      map(plugin => Boolean(plugin && plugin.request))
+      map(plugin => Boolean(plugin && plugin.pending))
     );
   }
 

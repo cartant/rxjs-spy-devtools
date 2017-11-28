@@ -1,16 +1,12 @@
 import { createEntityAdapter, EntityState } from '@ngrx/entity';
 import { Action, createFeatureSelector } from '@ngrx/store';
-import { on, reducer, union } from 'ts-action';
+import { on, reducer } from 'ts-action';
 import * as PluginActions from './plugin.actions';
 
-const Requests = union(
-  PluginActions.Log,
-  PluginActions.LogTeardown
-);
-
 export interface LogPlugin {
+  logging: boolean;
+  pending: boolean;
   pluginId?: string;
-  request?: typeof Requests;
   spyId: string;
   timestamp: number;
 }
@@ -22,20 +18,36 @@ export const logPluginAdapter = createEntityAdapter<LogPlugin>({
 });
 
 export const logPluginReducer = reducer<LogPluginState>([
-  on(PluginActions.Log, (state, action) => logPluginAdapter.addOne({
-    spyId: action.spyId,
-    request: action,
+
+  on(PluginActions.Log, (state, { spyId }) => logPluginAdapter.addOne({
+    logging: true,
+    pending: true,
+    spyId: spyId,
     timestamp: Date.now()
   }, state)),
+
   on(PluginActions.LogFulfilled, (state, { pluginId, spyId }) => logPluginAdapter.updateOne({
     id: spyId,
-    changes: { pluginId, request: undefined }
+    changes: { pending: false, pluginId }
   }, state)),
-  on(PluginActions.LogTeardown, (state, action) => logPluginAdapter.updateOne({
-    id: action.spyId,
-    changes: { request: action }
+
+  on(PluginActions.LogRejected, (state, { error, request: { spyId } }) => logPluginAdapter.updateOne({
+    id: spyId,
+    changes: { logging: false, pending: false }
   }, state)),
-  on(PluginActions.LogTeardownFulfilled, (state, { spyId }) => logPluginAdapter.removeOne(spyId, state))
+
+  on(PluginActions.LogTeardown, (state, { spyId }) => logPluginAdapter.updateOne({
+    id: spyId,
+    changes: { logging: false, pending: true }
+  }, state)),
+
+  on(PluginActions.LogTeardownFulfilled, (state, { spyId }) => logPluginAdapter.removeOne(spyId, state)),
+
+  on(PluginActions.LogTeardownRejected, (state, { error, request: { spyId } }) => logPluginAdapter.updateOne({
+    id: spyId,
+    changes: { pending: false }
+  }, state))
+
 ], logPluginAdapter.getInitialState({}));
 
 export const selectLogPluginState = createFeatureSelector<LogPluginState>('logPlugins');

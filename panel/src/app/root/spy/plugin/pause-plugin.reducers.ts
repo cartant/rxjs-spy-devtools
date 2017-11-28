@@ -1,17 +1,11 @@
 import { createEntityAdapter, EntityState } from '@ngrx/entity';
 import { Action, createFeatureSelector } from '@ngrx/store';
-import { on, reducer, union } from 'ts-action';
+import { on, reducer } from 'ts-action';
 import * as PluginActions from './plugin.actions';
 
-const Requests = union(
-  PluginActions.Pause,
-  PluginActions.PauseCommand,
-  PluginActions.PauseTeardown
-);
-
 export interface PausePlugin {
+  pending: boolean;
   pluginId?: string;
-  request?: typeof Requests;
   spyId: string;
   state: 'paused' | 'resumed';
   timestamp: number;
@@ -24,35 +18,57 @@ export const pausePluginAdapter = createEntityAdapter<PausePlugin>({
 });
 
 export const pausePluginReducer = reducer<PausePluginState>([
-  on(PluginActions.Pause, (state, action) => pausePluginAdapter.addOne({
-    request: action,
-    spyId: action.spyId,
+
+  on(PluginActions.Pause, (state, { spyId }) => pausePluginAdapter.addOne({
+    pending: true,
+    spyId,
     state: 'paused',
     timestamp: Date.now()
   }, state)),
-  on(PluginActions.PauseFulfilled, (state, action) => pausePluginAdapter.updateOne({
-    id: action.spyId,
-    changes: { pluginId: action.pluginId, request: undefined }
+
+  on(PluginActions.PauseFulfilled, (state, { pluginId, spyId }) => pausePluginAdapter.updateOne({
+    id: spyId,
+    changes: { pending: false, pluginId }
   }, state)),
+
+  on(PluginActions.PauseRejected, (state, { error, request: { spyId } }) => pausePluginAdapter.updateOne({
+    id: spyId,
+    changes: { pending: false }
+  }, state)),
+
   on(PluginActions.PauseCommand, (state, { spyId }) => pausePluginAdapter.updateOne({
     id: spyId,
-    changes: { request: undefined }
+    changes: { pending: true }
   }, state)),
+
   on(PluginActions.PauseCommandFulfilled, (state, { command, spyId }) => {
     switch (command) {
     case 'pause':
-      return pausePluginAdapter.updateOne({ id: spyId, changes: { state: 'paused' } }, state);
+      return pausePluginAdapter.updateOne({ id: spyId, changes: { pending: false, state: 'paused' } }, state);
     case 'resume':
-      return pausePluginAdapter.updateOne({ id: spyId, changes: { state: 'resumed' } }, state);
+      return pausePluginAdapter.updateOne({ id: spyId, changes: { pending: false, state: 'resumed' } }, state);
     default:
       return state;
     }
   }),
-  on(PluginActions.PauseTeardown, (state, action) => pausePluginAdapter.updateOne({
-    id: action.spyId,
-    changes: { request: action }
+
+  on(PluginActions.PauseCommandRejected, (state, { error, request: { spyId  } }) => pausePluginAdapter.updateOne({
+    id: spyId,
+    changes: { pending: false }
   }, state)),
-  on(PluginActions.PauseTeardownFulfilled, (state, { spyId }) => pausePluginAdapter.removeOne(spyId, state))
+
+  on(PluginActions.PauseTeardown, (state, { spyId }) => pausePluginAdapter.updateOne({
+    id: spyId,
+    changes: { pending: true }
+  }, state)),
+
+  on(PluginActions.PauseTeardownFulfilled, (state, { spyId }) => pausePluginAdapter.removeOne(spyId, state)),
+
+  on(PluginActions.PauseTeardownRejected, (state, { error, request: { spyId  } }) => pausePluginAdapter.updateOne({
+    id: spyId,
+    changes: { pending: false }
+  }, state))
+
 ], pausePluginAdapter.getInitialState({}));
 
 export const selectPausePluginState = createFeatureSelector<PausePluginState>('pausePlugins');
