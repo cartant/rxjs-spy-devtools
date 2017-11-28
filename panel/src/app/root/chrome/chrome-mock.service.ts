@@ -2,8 +2,8 @@ import { Injectable, NgZone } from '@angular/core';
 
 import {
   CONTENT_MESSAGE,
+  MESSAGE_BROADCAST,
   MESSAGE_CONNECT,
-  MESSAGE_NOTIFICATION,
   MESSAGE_REQUEST,
   MESSAGE_RESPONSE,
   PANEL_MESSAGE
@@ -74,17 +74,20 @@ export class ChromeMockService {
       interval(1000).pipe(
         take(Infinity),
         map(counter => ({
-          id: counter.toString(),
-          messageType: MESSAGE_NOTIFICATION,
-          notification: 'before-next',
-          observable: pick(this._observable, 'id', 'tag', 'type'),
+          broadcastType: 'notification',
+          messageType: MESSAGE_BROADCAST,
+          notification: {
+            id: counter.toString(),
+            observable: pick(this._observable, 'id', 'tag', 'type'),
+            subscriber: pick(this._subscriber, 'id'),
+            subscription: pick(this._subscription, 'graph', 'id', 'stackTrace'),
+            tick: counter,
+            timestamp: Date.now(),
+            type: 'before-next',
+            value: { json: JSON.stringify(counter) }
+          },
           postId: counter.toString(),
-          postType: CONTENT_MESSAGE,
-          subscriber: pick(this._subscriber, 'id'),
-          subscription: pick(this._subscription, 'graph', 'id', 'stackTrace'),
-          tick: counter,
-          timestamp: Date.now(),
-          value: { json: JSON.stringify(counter) }
+          postType: CONTENT_MESSAGE
         })),
         share()
       ),

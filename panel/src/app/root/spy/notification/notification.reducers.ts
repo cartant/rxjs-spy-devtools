@@ -6,14 +6,14 @@ import { Connect, Disconnect, Notify } from '../service/service.actions';
 
 export interface Notification {
   id: string;
-  notification: string;
+  notificationType: string;
   observable: string;
+  observableType: string;
   subscriber: string;
   subscription: string;
   tag: string | null;
   tick: number;
   timestamp: number;
-  type: string;
   value?: { json: string };
 }
 export type NotificationState = EntityState<Notification>;
@@ -29,14 +29,14 @@ export const notificationReducer = reducer<NotificationState>([
   on(Notify, (state, { notification }) => {
     const result = notificationAdapter.addOne({
       id: notification.id,
-      notification: notification.notification,
+      notificationType: notification.type,
       observable: notification.observable.id,
+      observableType: notification.observable.type,
       subscriber: notification.subscriber.id,
       subscription: notification.subscription.id,
       tag: notification.observable.tag,
       tick: notification.tick,
       timestamp: notification.timestamp,
-      type: notification.observable.type,
       value: notification.value
     }, state);
     if (result.ids.length > APP_MAX_NOTIFICATIONS) {
