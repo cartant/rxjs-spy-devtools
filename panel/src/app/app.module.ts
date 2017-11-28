@@ -5,6 +5,7 @@ import { NgModule } from '@angular/core';
 import {
   MatButtonModule,
   MatCheckboxModule,
+  MatChipsModule,
   MatIconModule,
   MatSidenavModule,
   MatTableModule
@@ -27,6 +28,7 @@ import { PauseComponent } from './pause/pause.component';
     BrowserAnimationsModule,
     MatButtonModule,
     MatCheckboxModule,
+    MatChipsModule,
     MatIconModule,
     MatSidenavModule,
     MatTableModule,

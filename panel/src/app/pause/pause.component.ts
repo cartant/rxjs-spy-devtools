@@ -14,6 +14,7 @@ export class PauseComponent implements OnInit {
 
   @Input() public id: string;
   public paused: Observable<boolean>;
+  public queued = 0;
   public resumed: Observable<boolean>;
 
   constructor(private _store: Store<State>) {}

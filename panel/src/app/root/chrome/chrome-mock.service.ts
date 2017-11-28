@@ -25,6 +25,7 @@ import { merge } from 'rxjs/observable/merge';
 import { timer } from 'rxjs/observable/timer';
 import { map } from 'rxjs/operators/map';
 import { share } from 'rxjs/operators/share';
+import { take } from 'rxjs/operators/take';
 import { Subject } from 'rxjs/Subject';
 
 @Injectable()
@@ -71,6 +72,7 @@ export class ChromeMockService {
 
     this.posts = merge(
       interval(1000).pipe(
+        take(Infinity),
         map(counter => ({
           id: counter.toString(),
           messageType: MESSAGE_NOTIFICATION,

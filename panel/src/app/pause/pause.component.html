@@ -8,5 +8,8 @@
   <mat-icon>navigate_next</mat-icon>
 </button>
 <button (click)="skip()" [disabled]="resumed | async" mat-icon-button>
-  <mat-icon>redo</mat-icon>
+  <mat-icon>delete</mat-icon>
 </button>
+<mat-chip-list [hidden]="resumed | async">
+  <mat-chip selected="true">{{ queued }}</mat-chip>
+</mat-chip-list>
