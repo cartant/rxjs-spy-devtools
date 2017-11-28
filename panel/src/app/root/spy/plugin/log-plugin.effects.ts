@@ -15,8 +15,8 @@ export class LogPluginEffects {
   public log = this._actions.pipe(
     ofType(PluginActions.Log),
     switchMap(action => this._spyService.request({
-      match: action.spyId,
-      requestType: 'log'
+      requestType: 'log',
+      spyId: action.spyId
     }).pipe(
       map(response => response.error ?
         new PluginActions.LogRejected(response.error.toString(), action) :

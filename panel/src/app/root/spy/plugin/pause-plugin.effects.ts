@@ -15,8 +15,8 @@ export class PausePluginEffects {
   public pause = this._actions.pipe(
     ofType(PluginActions.Pause),
     switchMap(action => this._spyService.request({
-      match: action.spyId,
-      requestType: 'pause'
+      requestType: 'pause',
+      spyId: action.spyId
     }).pipe(
       map(response => response.error ?
         new PluginActions.PauseRejected(response.error.toString(), action) :
