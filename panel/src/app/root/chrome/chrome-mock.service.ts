@@ -31,16 +31,16 @@ import { Subject } from 'rxjs/Subject';
 export class ChromeMockService {
 
   public posts: Observable<Post>;
-  private observable_: ObservableSnapshot;
-  private subject_: Subject<Post>;
-  private subscriber_: SubscriberSnapshot;
-  private subscription_: SubscriptionSnapshot;
+  private _observable: ObservableSnapshot;
+  private _subject: Subject<Post>;
+  private _subscriber: SubscriberSnapshot;
+  private _subscription: SubscriptionSnapshot;
 
   constructor(ngZone: NgZone) {
 
     console.warn('Using mock Chrome service.');
 
-    this.observable_ = {
+    this._observable = {
       id: '1',
       path: '/interval',
       subscriptions: ['3'],
@@ -48,15 +48,15 @@ export class ChromeMockService {
       tick: 0,
       type: 'interval'
     };
-    this.subject_ = new Subject<Post>();
-    this.subscriber_ = {
+    this._subject = new Subject<Post>();
+    this._subscriber = {
       id: '2',
       subscriptions: ['3'],
       tick: 0,
       values: [],
       valuesFlushed: 0
     };
-    this.subscription_ = {
+    this._subscription = {
       complete: false,
       error: undefined,
       graph: null,
@@ -75,11 +75,11 @@ export class ChromeMockService {
           id: counter.toString(),
           messageType: MESSAGE_NOTIFICATION,
           notification: 'before-next',
-          observable: pick(this.observable_, 'id', 'tag', 'type'),
+          observable: pick(this._observable, 'id', 'tag', 'type'),
           postId: counter.toString(),
           postType: CONTENT_MESSAGE,
-          subscriber: pick(this.subscriber_, 'id'),
-          subscription: pick(this.subscription_, 'graph', 'id', 'stackTrace'),
+          subscriber: pick(this._subscriber, 'id'),
+          subscription: pick(this._subscription, 'graph', 'id', 'stackTrace'),
           tick: counter,
           timestamp: Date.now(),
           value: { json: JSON.stringify(counter) }
@@ -94,7 +94,7 @@ export class ChromeMockService {
         })),
         share()
       ),
-      this.subject_
+      this._subject
     );
   }
 
@@ -112,12 +112,12 @@ export class ChromeMockService {
           postType: CONTENT_MESSAGE,
           request: { ...message, ...post },
           snapshot: {
-            observables: [this.observable_],
-            subscribers: [this.subscriber_],
-            subscriptions: [this.subscription_]
+            observables: [this._observable],
+            subscribers: [this._subscriber],
+            subscriptions: [this._subscription]
           }
         };
-        this.subject_.next(request);
+        this._subject.next(request);
       }
     }, 0);
     return post;

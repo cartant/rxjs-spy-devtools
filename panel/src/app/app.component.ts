@@ -20,12 +20,12 @@ export class AppComponent {
   public observableDataSource: DataSource<Partial<ObservableSnapshot>>;
   public observableDisplayedColumns = ['id', 'tag', 'type', 'log', 'pause'];
 
-  constructor(private store_: Store<State>) {
-    this.notificationDataSource = new DataSource(store_.pipe(
+  constructor(private _store: Store<State>) {
+    this.notificationDataSource = new DataSource(_store.pipe(
       map(selectAllNotifications),
       auditTime(APP_AUDIT_TIME)
     ));
-    this.observableDataSource = new DataSource(store_.pipe(
+    this.observableDataSource = new DataSource(_store.pipe(
       map(selectAllObservables),
       auditTime(APP_AUDIT_TIME)
     ));

@@ -1,1 +1,1 @@
-<mat-checkbox (change)="change($event)" [checked]="false" [indeterminate]="false"></mat-checkbox>
+<mat-checkbox (change)="change($event)" [checked]="checked | async" [indeterminate]="indeterminate | async"></mat-checkbox>
