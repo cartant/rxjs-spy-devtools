@@ -21,14 +21,19 @@ export class ServiceEffects {
   );
 
   @Effect()
+  public deckStats = this._spyService.deckStats.pipe(
+    map(stats => new ServiceActions.BroadcastDeckStats(stats))
+  );
+
+  @Effect()
   public disconnect = this._spyService.posts.pipe(
     filter(post => post.messageType === MESSAGE_DISCONNECT),
     map(() => new ServiceActions.Disconnect())
   );
 
   @Effect()
-  public notify = this._spyService.notifications.pipe(
-    map(notification => new ServiceActions.Notify(notification))
+  public notifications = this._spyService.notifications.pipe(
+    map(notification => new ServiceActions.BroadcastNotification(notification))
   );
 
   @Effect()

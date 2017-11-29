@@ -2,8 +2,10 @@ import { createEntityAdapter, EntityState } from '@ngrx/entity';
 import { Action, createFeatureSelector } from '@ngrx/store';
 import { on, reducer } from 'ts-action';
 import * as PluginActions from './plugin.actions';
+import * as ServiceActions from '../service/service.actions';
 
 export interface PausePlugin {
+  notifications: number;
   pending: boolean;
   pluginId?: string;
   spyId: string;
@@ -20,6 +22,7 @@ export const pausePluginAdapter = createEntityAdapter<PausePlugin>({
 export const pausePluginReducer = reducer<PausePluginState>([
 
   on(PluginActions.Pause, (state, { spyId }) => pausePluginAdapter.addOne({
+    notifications: 0,
     pending: true,
     spyId,
     state: 'paused',
@@ -67,6 +70,11 @@ export const pausePluginReducer = reducer<PausePluginState>([
   on(PluginActions.PauseTeardownRejected, (state, { error, request: { spyId  } }) => pausePluginAdapter.updateOne({
     id: spyId,
     changes: { pending: false }
+  }, state)),
+
+  on(ServiceActions.BroadcastDeckStats, (state, { stats }) => pausePluginAdapter.updateOne({
+    id: stats.id,
+    changes: { notifications: stats.notifications }
   }, state))
 
 ], pausePluginAdapter.getInitialState({}));

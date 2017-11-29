@@ -11,5 +11,5 @@
   <mat-icon>delete</mat-icon>
 </button>
 <mat-chip-list [hidden]="resumed | async">
-  <mat-chip selected="true">{{ queued }}</mat-chip>
+  <mat-chip selected="true">{{ notifications | async }}</mat-chip>
 </mat-chip-list>

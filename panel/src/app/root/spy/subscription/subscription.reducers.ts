@@ -2,7 +2,7 @@ import { SubscriptionSnapshot } from '@devtools/interfaces';
 import { createEntityAdapter, EntityState } from '@ngrx/entity';
 import { createFeatureSelector } from '@ngrx/store';
 import { on, reducer } from 'ts-action';
-import { Connect, Disconnect, Notify, SnapshotFulfilled } from '../service/service.actions';
+import { BroadcastNotification, Connect, Disconnect, SnapshotFulfilled } from '../service/service.actions';
 
 export type SubscriptionState = EntityState<Partial<SubscriptionSnapshot>>;
 
@@ -11,9 +11,8 @@ export const subscriptionAdapter = createEntityAdapter<Partial<SubscriptionSnaps
 });
 
 export const subscriptionReducer = reducer<SubscriptionState>([
-  on(Connect, () => subscriptionAdapter.getInitialState({})),
-  on(Disconnect, () => subscriptionAdapter.getInitialState({})),
-  on(Notify, (state, { notification }) => {
+
+  on(BroadcastNotification, (state, { notification }) => {
     const id = notification.subscription.id;
     const previous = state.entities[id];
     const changes = {
@@ -24,9 +23,15 @@ export const subscriptionReducer = reducer<SubscriptionState>([
       subscriptionAdapter.updateOne({ id, changes }, state) :
       subscriptionAdapter.addOne(changes, state);
   }),
+
+  on(Connect, () => subscriptionAdapter.getInitialState({})),
+
+  on(Disconnect, () => subscriptionAdapter.getInitialState({})),
+
   on(SnapshotFulfilled, (state, { snapshot }) =>
     subscriptionAdapter.addMany(snapshot.subscriptions, subscriptionAdapter.getInitialState({}))
   )
+
 ], subscriptionAdapter.getInitialState({}));
 
 export const selectSubscriptionState = createFeatureSelector<SubscriptionState>('subscriptions');

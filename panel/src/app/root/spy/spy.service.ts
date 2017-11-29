@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CONTENT_MESSAGE, MESSAGE_REQUEST } from '@devtools/constants';
 import { isBroadcast, isPostRequest, isPostResponse } from '@devtools/guards';
-import { Broadcast, Message, Notification, Post, Request, Response } from '@devtools/interfaces';
+import { Broadcast, DeckStats, Message, Notification, Post, Request, Response } from '@devtools/interfaces';
 import { Observable } from 'rxjs/Observable';
 import { filter } from 'rxjs/operators/filter';
 import { map } from 'rxjs/operators/map';
@@ -12,12 +12,20 @@ import { ChromeService } from '../chrome';
 @Injectable()
 export class SpyService {
 
+  public deckStats: Observable<DeckStats>;
   public notifications: Observable<Notification>;
   public posts: Observable<Post>;
   public requests: Observable<Post & Request>;
   public responses: Observable<Post & Response>;
 
   constructor(private _chromeService: ChromeService) {
+    this.deckStats = _chromeService.posts.pipe(
+      filter(post => post.postType === CONTENT_MESSAGE),
+      filter(isBroadcast),
+      filter(message => message.broadcastType === 'deck-stats'),
+      map(message => message.stats as DeckStats),
+      share()
+    );
     this.notifications = _chromeService.posts.pipe(
       filter(post => post.postType === CONTENT_MESSAGE),
       filter(isBroadcast),

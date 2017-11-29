@@ -13,13 +13,16 @@ import { map } from 'rxjs/operators/map';
 export class PauseComponent implements OnInit {
 
   @Input() public id: string;
+  public notifications: Observable<number>;
   public paused: Observable<boolean>;
-  public queued = 0;
   public resumed: Observable<boolean>;
 
   constructor(private _store: Store<State>) {}
 
   ngOnInit() {
+    this.notifications = this._plugin().pipe(
+      map(plugin => plugin ? plugin.notifications : 0)
+    );
     this.paused = this._plugin().pipe(
       map(plugin => Boolean(plugin && (plugin.state === 'paused')))
     );

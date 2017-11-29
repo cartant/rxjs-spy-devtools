@@ -2,7 +2,7 @@ import { APP_MAX_NOTIFICATIONS } from '@app/constants';
 import { createEntityAdapter, EntityState } from '@ngrx/entity';
 import { createFeatureSelector } from '@ngrx/store';
 import { on, reducer } from 'ts-action';
-import { Connect, Disconnect, Notify } from '../service/service.actions';
+import { BroadcastNotification, Connect, Disconnect } from '../service/service.actions';
 
 export interface Notification {
   id: string;
@@ -24,9 +24,8 @@ export const notificationAdapter = createEntityAdapter<Notification>({
 });
 
 export const notificationReducer = reducer<NotificationState>([
-  on(Connect, () => notificationAdapter.getInitialState({})),
-  on(Disconnect, () => notificationAdapter.getInitialState({})),
-  on(Notify, (state, { notification }) => {
+
+  on(BroadcastNotification, (state, { notification }) => {
     const result = notificationAdapter.addOne({
       id: notification.id,
       notificationType: notification.type,
@@ -45,7 +44,12 @@ export const notificationReducer = reducer<NotificationState>([
         .forEach(key => { delete result.entities[key]; });
     }
     return result;
-  })
+  }),
+
+  on(Connect, () => notificationAdapter.getInitialState({})),
+
+  on(Disconnect, () => notificationAdapter.getInitialState({}))
+
 ], notificationAdapter.getInitialState({}));
 
 export const selectNotificationState = createFeatureSelector<NotificationState>('notifications');
