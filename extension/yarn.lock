@@ -1880,7 +1880,7 @@ run-queue@^1.0.0, run-queue@^1.0.3:
     aproba "^1.1.1"
 
 rxjs-spy@../../rxjs-spy/dist:
-  version "6.0.0-beta.3"
+  version "6.0.0-rc.0"
   dependencies:
     "@types/circular-json" "^0.4.0"
     "@types/stacktrace-js" "^0.0.32"
