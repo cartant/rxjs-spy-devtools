@@ -1,11 +1,4 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { APP_AUDIT_TIME } from '@app/constants';
-import { Log, Notification, selectAllNotifications, selectAllObservables, State } from '@app/root/spy';
-import { DataSource } from '@app/shared/utils';
-import { ObservableSnapshot } from '@devtools/interfaces';
-import { Store } from '@ngrx/store';
-import { auditTime } from 'rxjs/operators/auditTime';
-import { map } from 'rxjs/operators/map';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -15,19 +8,5 @@ import { map } from 'rxjs/operators/map';
 })
 export class AppComponent {
 
-  public notificationDataSource: DataSource<Notification>;
-  public notificationDisplayedColumns = ['id', 'notification', 'tag', 'type', 'value'];
-  public observableDataSource: DataSource<Partial<ObservableSnapshot>>;
-  public observableDisplayedColumns = ['id', 'tag', 'type', 'log', 'pause'];
-
-  constructor(private _store: Store<State>) {
-    this.notificationDataSource = new DataSource(_store.pipe(
-      map(selectAllNotifications),
-      auditTime(APP_AUDIT_TIME)
-    ));
-    this.observableDataSource = new DataSource(_store.pipe(
-      map(selectAllObservables),
-      auditTime(APP_AUDIT_TIME)
-    ));
-  }
+  constructor() {}
 }

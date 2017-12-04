@@ -1,0 +1,24 @@
+<mat-table #table [dataSource]="dataSource">
+  <ng-container matColumnDef="id">
+    <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
+    <mat-cell *matCellDef="let row"> {{ row.id }} </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="tag">
+    <mat-header-cell *matHeaderCellDef> Tag </mat-header-cell>
+    <mat-cell *matCellDef="let row"> {{ row.tag }} </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="type">
+    <mat-header-cell *matHeaderCellDef> Type </mat-header-cell>
+    <mat-cell *matCellDef="let row"> {{ row.type }} </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="log">
+    <mat-header-cell *matHeaderCellDef [ngClass]="'log'"> Log </mat-header-cell>
+    <mat-cell *matCellDef="let row" [ngClass]="'log'"><app-log [id]="row.id"></app-log></mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="pause">
+    <mat-header-cell *matHeaderCellDef [ngClass]="'pause'"> Pause </mat-header-cell>
+    <mat-cell *matCellDef="let row" [ngClass]="'pause'"><app-pause [id]="row.id"></app-pause></mat-cell>
+  </ng-container>
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>

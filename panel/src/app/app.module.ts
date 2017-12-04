@@ -8,7 +8,8 @@ import {
   MatChipsModule,
   MatIconModule,
   MatSidenavModule,
-  MatTableModule
+  MatTableModule,
+  MatTabsModule
 } from '@angular/material';
 
 import { AppComponent } from '@app/app.component';
@@ -16,12 +17,16 @@ import { RootModule } from '@app/root';
 import { SharedModule } from '@app/shared';
 import { LogComponent } from './log/log.component';
 import { PauseComponent } from './pause/pause.component';
+import { ObservablesComponent } from './observables/observables.component';
+import { NotificationsComponent } from './notifications/notifications.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LogComponent,
-    PauseComponent
+    PauseComponent,
+    ObservablesComponent,
+    NotificationsComponent
   ],
   imports: [
     BrowserModule,
@@ -32,6 +37,7 @@ import { PauseComponent } from './pause/pause.component';
     MatIconModule,
     MatSidenavModule,
     MatTableModule,
+    MatTabsModule,
     RootModule,
     SharedModule
   ],
