@@ -5,6 +5,7 @@ import { DataSource } from '@app/shared/utils';
 import { ObservableSnapshot } from '@devtools/interfaces';
 import { Store } from '@ngrx/store';
 import { auditTime } from 'rxjs/operators/auditTime';
+import { map } from 'rxjs/operators/map';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -19,7 +20,8 @@ export class ObservablesComponent {
 
   constructor(private _store: Store<State>) {
     this.dataSource = new DataSource(_store.select(selectAllObservables).pipe(
-      auditTime(APP_AUDIT_TIME)
+      auditTime(APP_AUDIT_TIME),
+      map(observables => observables.filter(observable => observable.subscriptions.length > 0))
     ));
   }
 }
