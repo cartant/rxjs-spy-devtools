@@ -2,6 +2,7 @@ import { Injectable, NgZone } from '@angular/core';
 
 import {
   CONTENT_MESSAGE,
+  MESSAGE_BATCH,
   MESSAGE_BROADCAST,
   MESSAGE_CONNECT,
   MESSAGE_REQUEST,
@@ -74,18 +75,21 @@ export class ChromeMockService {
       interval(1000).pipe(
         take(Infinity),
         map(counter => ({
-          broadcastType: 'notification',
-          messageType: MESSAGE_BROADCAST,
-          notification: {
-            id: counter.toString(),
-            observable: pick(this._observable, 'id', 'tag', 'type'),
-            subscriber: pick(this._subscriber, 'id'),
-            subscription: pick(this._subscription, 'graph', 'id', 'stackTrace'),
-            tick: counter,
-            timestamp: Date.now(),
-            type: 'before-next',
-            value: { json: JSON.stringify(counter) }
-          },
+          messages: [{
+            broadcastType: 'notification',
+            messageType: MESSAGE_BROADCAST,
+            notification: {
+              id: counter.toString(),
+              observable: pick(this._observable, 'id', 'tag', 'type'),
+              subscriber: pick(this._subscriber, 'id'),
+              subscription: pick(this._subscription, 'graph', 'id', 'stackTrace'),
+              tick: counter,
+              timestamp: Date.now(),
+              type: 'before-next',
+              value: { json: JSON.stringify(counter) }
+            },
+          }],
+          messageType: MESSAGE_BATCH,
           postId: counter.toString(),
           postType: CONTENT_MESSAGE
         })),
