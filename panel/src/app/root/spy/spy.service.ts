@@ -6,6 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import { concatMap } from 'rxjs/operators/concatMap';
 import { filter } from 'rxjs/operators/filter';
 import { map } from 'rxjs/operators/map';
+import { merge } from 'rxjs/operators/merge';
 import { share } from 'rxjs/operators/share';
 import { take } from 'rxjs/operators/take';
 import { ChromeService } from '../chrome';
@@ -13,6 +14,7 @@ import { ChromeService } from '../chrome';
 @Injectable()
 export class SpyService {
 
+  public batchedMessages: Observable<Message>;
   public deckStats: Observable<DeckStats>;
   public notifications: Observable<Notification>;
   public posts: Observable<Post>;
@@ -20,35 +22,33 @@ export class SpyService {
   public responses: Observable<Post & Response>;
 
   constructor(private _chromeService: ChromeService) {
-    this.deckStats = _chromeService.posts.pipe(
+    this.posts = _chromeService.posts.pipe(
       filter(post => post.postType === CONTENT_MESSAGE),
+      share()
+    );
+    this.batchedMessages = this.posts.pipe(
       filter(isBatch),
-      concatMap(message => message.messages),
+      concatMap(message => message.messages)
+    );
+    this.deckStats = this.posts.pipe(
+      merge(this.batchedMessages),
       filter(isBroadcast),
       filter(message => message.broadcastType === 'deck-stats'),
       map(message => message.stats as DeckStats),
       share()
     );
-    this.notifications = _chromeService.posts.pipe(
-      filter(post => post.postType === CONTENT_MESSAGE),
-      filter(isBatch),
-      concatMap(message => message.messages),
+    this.notifications = this.posts.pipe(
+      merge(this.batchedMessages),
       filter(isBroadcast),
       filter(message => message.broadcastType === 'notification'),
       map(message => message.notification as Notification),
       share()
     );
-    this.posts = _chromeService.posts.pipe(
-      filter(post => post.postType === CONTENT_MESSAGE),
-      share()
-    );
-    this.requests = _chromeService.posts.pipe(
-      filter(post => post.postType === CONTENT_MESSAGE),
+    this.requests = this.posts.pipe(
       filter(isPostRequest),
       share()
     );
-    this.responses = _chromeService.posts.pipe(
-      filter(post => post.postType === CONTENT_MESSAGE),
+    this.responses = this.posts.pipe(
       filter(isPostResponse),
       share()
     );
