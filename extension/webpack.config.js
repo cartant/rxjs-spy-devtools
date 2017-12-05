@@ -51,12 +51,16 @@ module.exports = env => {
                     .replace(/href="([\w-_.]+\.css)"/g, `href="css/$1"`)
                     .replace(/src="([\w-_.]+\.js)"/g, `src="js/$1"`)
             }, {
+                context: "../panel/dist/assets",
+                from: "**/*",
+                to: path.join(__dirname, "./dist/assets")
+            }, {
                 context: "../panel/dist",
-                from: "**/*.css",
+                from: "*.css",
                 to: path.join(__dirname, "./dist/css")
             }, {
                 context: "../panel/dist",
-                from: "**/*.js",
+                from: "*.js",
                 to: path.join(__dirname, "./dist/js")
             }]),
             ...plugins
