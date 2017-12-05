@@ -3,6 +3,7 @@ import { createEntityAdapter, EntityState } from '@ngrx/entity';
 import { createFeatureSelector } from '@ngrx/store';
 import { on, reducer } from 'ts-action';
 import { BroadcastNotification, Connect, Disconnect, SnapshotFulfilled } from '../service/service.actions';
+import { subscriptionIdsReducer } from '../subscription/subscription.reducers';
 
 export type SubscriberState = EntityState<Partial<SubscriberSnapshot>>;
 
@@ -12,7 +13,8 @@ export const subscriberAdapter = createEntityAdapter<Partial<SubscriberSnapshot>
 
 export const subscriberReducer = reducer<SubscriberState>([
 
-  on(BroadcastNotification, (state, { notification }) => {
+  on(BroadcastNotification, (state, action) => {
+    const { notification } = action;
     const id = notification.subscriber.id;
     const previous = state.entities[id];
     const value = {
@@ -20,12 +22,13 @@ export const subscriberReducer = reducer<SubscriberState>([
       timestamp: notification.timestamp,
       value: notification.value
     };
-    const changes = {
+    const changes: Partial<SubscriberSnapshot> = {
       ...notification.subscriber,
       tick: notification.tick,
       values: previous ? [...previous.values, value] : [value],
       valuesFlushed: previous ? previous.valuesFlushed : 0
     };
+    changes.subscriptions = subscriptionIdsReducer(previous ? previous.subscriptions : [], action);
     if (changes.values.length > 4) {
       changes.values.splice(0, 1);
       changes.valuesFlushed += 1;

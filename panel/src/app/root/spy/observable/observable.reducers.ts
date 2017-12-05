@@ -3,6 +3,7 @@ import { createEntityAdapter, EntityState } from '@ngrx/entity';
 import { createFeatureSelector } from '@ngrx/store';
 import { on, reducer } from 'ts-action';
 import { BroadcastNotification, Connect, Disconnect, SnapshotFulfilled } from '../service/service.actions';
+import { subscriptionIdsReducer } from '../subscription/subscription.reducers';
 
 export type ObservableState = EntityState<Partial<ObservableSnapshot>>;
 
@@ -12,13 +13,15 @@ export const observableAdapter = createEntityAdapter<Partial<ObservableSnapshot>
 
 export const observableReducer = reducer<ObservableState>([
 
-  on(BroadcastNotification, (state, { notification }) => {
+  on(BroadcastNotification, (state, action) => {
+    const { notification } = action;
     const id = notification.observable.id;
     const previous = state.entities[id];
-    const changes = {
+    const changes: Partial<ObservableSnapshot> = {
       ...notification.observable,
       tick: notification.tick
     };
+    changes.subscriptions = subscriptionIdsReducer(previous ? previous.subscriptions : [], action);
     return previous ?
       observableAdapter.updateOne({ id, changes }, state) :
       observableAdapter.addOne(changes, state);

@@ -40,3 +40,18 @@ export const {
   selectEntities: selectSubscriptionEntities,
   selectAll: selectAllSubscriptions
 } = subscriptionAdapter.getSelectors(selectSubscriptionState);
+
+export const subscriptionIdsReducer = reducer<string[]>([
+
+  on(BroadcastNotification, (state, { notification }) => {
+    switch (notification.type) {
+    case 'after-subscribe':
+      return [...state, notification.subscription.id];
+    case 'after-unsubscribe':
+      return state.filter(id => id !== notification.subscription.id);
+    default:
+      return state;
+    }
+  })
+
+], []);
