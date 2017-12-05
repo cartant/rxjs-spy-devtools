@@ -21,7 +21,10 @@ export class ObservablesComponent {
   constructor(private _store: Store<State>) {
     this.dataSource = new DataSource(_store.select(selectAllObservables).pipe(
       auditTime(APP_AUDIT_TIME),
-      map(observables => observables.filter(observable => observable.subscriptions.length > 0))
+      map(observables => observables
+        .filter(observable => observable.subscriptions.length > 0)
+        .reverse()
+      )
     ));
   }
 }
