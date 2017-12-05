@@ -1,9 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { APP_AUDIT_TIME } from '@app/constants';
 import { Pause, PauseCommand, PausePlugin, PauseTeardown, selectPausePluginEntities, State } from '@app/root/spy';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
-import { auditTime } from 'rxjs/operators/auditTime';
 import { first } from 'rxjs/operators/first';
 import { map } from 'rxjs/operators/map';
 
@@ -23,7 +21,6 @@ export class PauseComponent implements OnInit {
 
   ngOnInit() {
     this.notifications = this._plugin().pipe(
-      auditTime(APP_AUDIT_TIME),
       map(plugin => plugin ? plugin.notifications : 0)
     );
     this.paused = this._plugin().pipe(
