@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { CONTENT_MESSAGE, MESSAGE_REQUEST } from '@devtools/constants';
-import { isBroadcast, isPostRequest, isPostResponse } from '@devtools/guards';
+import { isBatch, isBroadcast, isPostRequest, isPostResponse } from '@devtools/guards';
 import { Broadcast, DeckStats, Message, Notification, Post, Request, Response } from '@devtools/interfaces';
 import { Observable } from 'rxjs/Observable';
+import { concatMap } from 'rxjs/operators/concatMap';
 import { filter } from 'rxjs/operators/filter';
 import { map } from 'rxjs/operators/map';
 import { share } from 'rxjs/operators/share';
@@ -21,6 +22,8 @@ export class SpyService {
   constructor(private _chromeService: ChromeService) {
     this.deckStats = _chromeService.posts.pipe(
       filter(post => post.postType === CONTENT_MESSAGE),
+      filter(isBatch),
+      concatMap(message => message.messages),
       filter(isBroadcast),
       filter(message => message.broadcastType === 'deck-stats'),
       map(message => message.stats as DeckStats),
@@ -28,6 +31,8 @@ export class SpyService {
     );
     this.notifications = _chromeService.posts.pipe(
       filter(post => post.postType === CONTENT_MESSAGE),
+      filter(isBatch),
+      concatMap(message => message.messages),
       filter(isBroadcast),
       filter(message => message.broadcastType === 'notification'),
       map(message => message.notification as Notification),
