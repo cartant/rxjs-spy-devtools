@@ -41,8 +41,8 @@ function installExtension(window: Window) {
         private _connected = true;
         private _listener: ((event: MessageEvent) => void) | null = null;
         private _subscribers: ((message: Post) => void)[] = [];
-        constructor() {
-            this.post({ messageType: "connect" });
+        constructor({ version }: { version: string }) {
+            this.post({ messageType: "connect", version });
             this._listener = event => {
                 if ((event.source === window) && event.data && (event.data.source === "rx-spy-devtools-panel")) {
                     this._subscribers.forEach(next => next(event.data));
@@ -81,8 +81,8 @@ function installExtension(window: Window) {
     }
 
     class ExtensionImpl implements Extension {
-        connect(): Connection {
-            return new ConnectionImpl();
+        connect(options: { version: string }): Connection {
+            return new ConnectionImpl(options);
         }
     }
 

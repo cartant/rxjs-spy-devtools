@@ -6,10 +6,10 @@
 
 import { interval } from "rxjs/observable/interval";
 import { map } from "rxjs/operators/map";
-import { spy } from "rxjs-spy";
+import { create } from "rxjs-spy";
 import { tag } from "rxjs-spy/operators/tag";
 
-spy();
+const spy = create({});
 
 interval(1000).pipe(
     tag("interval"),
