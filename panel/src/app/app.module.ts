@@ -1,15 +1,17 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import {
   MatButtonModule,
   MatCheckboxModule,
   MatChipsModule,
+  MatFormFieldModule,
   MatIconModule,
+  MatInputModule,
   MatSidenavModule,
-  MatTableModule,
-  MatTabsModule
+  MatTableModule
 } from '@angular/material';
 
 import { AppComponent } from '@app/app.component';
@@ -31,13 +33,16 @@ import { NotificationsComponent } from './notifications/notifications.component'
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    FormsModule,
     MatButtonModule,
     MatCheckboxModule,
     MatChipsModule,
+    MatFormFieldModule,
     MatIconModule,
+    MatInputModule,
     MatSidenavModule,
     MatTableModule,
-    MatTabsModule,
+    ReactiveFormsModule,
     RootModule,
     SharedModule
   ],

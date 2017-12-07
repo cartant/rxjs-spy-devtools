@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { APP_AUDIT_TIME } from '@app/constants';
+import { APP_AUDIT_TIME_OUTPUT } from '@app/constants';
 import { Notification, selectAllNotifications, State } from '@app/root/spy';
 import { DataSource } from '@app/shared/utils';
 import { Store } from '@ngrx/store';
@@ -18,7 +18,7 @@ export class NotificationsComponent {
 
   constructor(private _store: Store<State>) {
     this.dataSource = new DataSource(_store.select(selectAllNotifications).pipe(
-      auditTime(APP_AUDIT_TIME)
+      auditTime(APP_AUDIT_TIME_OUTPUT)
     ));
   }
 }
