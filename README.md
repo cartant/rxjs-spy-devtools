@@ -23,11 +23,11 @@ It's not yet ready to be released on the Chrome Web Store, but if you want to ch
 
 4. Install the extension:
 
-    * In Chrome, navigate to [chrome://extensions](chrome://extensions).
+    * In Chrome, navigate to "chrome://extensions".
     * Click the "Load unpacked extension..." button.
     * Navigate to the `rxjs-spy-devtools/extension/dist` directory and click OK.
 
-5. If you open the DevTools, you should have an "RxJS" entry in the tab panel. (You might have to click the ">>" button to see it.)
+5. If you open the DevTools, you should have an "RxJS" entry in the tab panel. (You might have to click the `>>` button to see it.)
 
 6. If you navigate to a page in which a spy has been created, you should see a list of observables (filterable on tag and type) in the "RxJS" panel. You might find that you need to refresh the page after opening to the "RxJS" panel - as I said, it still needs some work.
 
