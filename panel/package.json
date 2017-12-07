@@ -1,6 +1,6 @@
 {
   "name": "panel",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "license": "MIT",
   "scripts": {
     "build:d": "ng build",
