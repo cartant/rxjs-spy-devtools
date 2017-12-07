@@ -3,6 +3,7 @@ import { APP_AUDIT_TIME } from '@app/constants';
 import { selectAllObservables, State } from '@app/root/spy';
 import { DataSource } from '@app/shared/utils';
 import { ObservableSnapshot } from '@devtools/interfaces';
+import { environment } from '@env/environment';
 import { Store } from '@ngrx/store';
 import { auditTime } from 'rxjs/operators/auditTime';
 import { map } from 'rxjs/operators/map';
@@ -16,7 +17,9 @@ import { map } from 'rxjs/operators/map';
 export class ObservablesComponent {
 
   public dataSource: DataSource<Partial<ObservableSnapshot>>;
-  public displayedColumns = ['id', 'tag', 'type', 'log', 'pause'];
+  public displayedColumns = environment.production ?
+    ['tag', 'type', 'log', 'pause'] :
+    ['id', 'tag', 'type', 'log', 'pause'];
 
   constructor(private _store: Store<State>) {
     this.dataSource = new DataSource(_store.select(selectAllObservables).pipe(
