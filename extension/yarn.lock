@@ -1879,9 +1879,8 @@ run-queue@^1.0.0, run-queue@^1.0.3:
   dependencies:
     aproba "^1.1.1"
 
-rxjs-spy@^6.0.0:
+rxjs-spy@../../rxjs-spy/dist:
   version "6.0.0"
-  resolved "https://registry.yarnpkg.com/rxjs-spy/-/rxjs-spy-6.0.0.tgz#c56306f9bc21ff3e924fba42608654dc8cdcdc52"
   dependencies:
     "@types/circular-json" "^0.4.0"
     "@types/stacktrace-js" "^0.0.32"
