@@ -1,4 +1,7 @@
 {
+  "angularCompilerOptions": {
+    "preserveWhitespaces": false
+  },
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "baseUrl": "./",

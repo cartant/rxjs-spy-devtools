@@ -1,4 +1,7 @@
 {
+  "angularCompilerOptions": {
+    "preserveWhitespaces": false
+  },
   "compileOnSave": false,
   "compilerOptions": {
     "baseUrl": "./src",
