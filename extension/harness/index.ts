@@ -9,7 +9,9 @@ import { map } from "rxjs/operators/map";
 import { create } from "rxjs-spy";
 import { tag } from "rxjs-spy/operators/tag";
 
-const spy = create({});
+const spy = create({
+    sourceMaps: true
+});
 
 interval(1000).pipe(
     tag("interval"),
