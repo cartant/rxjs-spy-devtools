@@ -370,9 +370,9 @@ cipher-base@^1.0.0, cipher-base@^1.0.1, cipher-base@^1.0.3:
     inherits "^2.0.1"
     safe-buffer "^5.0.1"
 
-circular-json@^0.4.0:
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/circular-json/-/circular-json-0.4.0.tgz#c448ea998b7fe31ecf472ec29c6b608e2e2a62fd"
+circular-json@^0.5.0:
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/circular-json/-/circular-json-0.5.1.tgz#b8942a09e535863dc21b04417a91971e1d9cd91f"
 
 cliui@^2.1.0:
   version "2.1.0"
@@ -1885,8 +1885,9 @@ rxjs-spy@^6.0.0:
   dependencies:
     "@types/circular-json" "^0.4.0"
     "@types/stacktrace-js" "^0.0.32"
-    circular-json "^0.4.0"
-    stacktrace-js "^2.0.0"
+    circular-json "^0.5.0"
+    error-stack-parser "^2.0.1"
+    stacktrace-gps "^3.0.2"
 
 rxjs@^5.5.4:
   version "5.5.5"
@@ -1997,30 +1998,16 @@ ssri@^5.0.0:
   dependencies:
     safe-buffer "^5.1.0"
 
-stack-generator@^2.0.1:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/stack-generator/-/stack-generator-2.0.2.tgz#3c13d952a596ab9318fec0669d0a1df8b87176c7"
-  dependencies:
-    stackframe "^1.0.4"
-
 stackframe@^1.0.3, stackframe@^1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/stackframe/-/stackframe-1.0.4.tgz#357b24a992f9427cba6b545d96a14ed2cbca187b"
 
-stacktrace-gps@^3.0.1:
+stacktrace-gps@^3.0.2:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/stacktrace-gps/-/stacktrace-gps-3.0.2.tgz#33f8baa4467323ab2bd1816efa279942ba431ccc"
   dependencies:
     source-map "0.5.6"
     stackframe "^1.0.4"
-
-stacktrace-js@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/stacktrace-js/-/stacktrace-js-2.0.0.tgz#776ca646a95bc6c6b2b90776536a7fc72c6ddb58"
-  dependencies:
-    error-stack-parser "^2.0.1"
-    stack-generator "^2.0.1"
-    stacktrace-gps "^3.0.1"
 
 stream-browserify@^2.0.1:
   version "2.0.1"
