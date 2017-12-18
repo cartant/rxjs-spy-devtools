@@ -1,5 +1,14 @@
+form {
+  margin: 8px
+}
+
 .log {
   flex: 0 0 50px;
+}
+
+/* https://github.com/angular/material2/issues/8600 */
+mat-cell, .mat-header-cell {
+  overflow: visible;
 }
 
 .mat-form-field {
@@ -8,5 +17,5 @@
 }
 
 .pause {
-  flex: 0 0 250px;
+  flex: 0 0 220px;
 }
