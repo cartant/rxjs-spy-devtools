@@ -23,7 +23,6 @@
   },
   "scripts": {
     "build:d": "rimraf dist && ./node_modules/.bin/webpack",
-    "build:h": "./node_modules/.bin/webpack --config webpack.config.harness.js",
     "build:p": "rimraf dist && ./node_modules/.bin/webpack --env.production",
     "watch": "./node_modules/.bin/webpack -w",
     "version": "node ./scripts/version.js"
