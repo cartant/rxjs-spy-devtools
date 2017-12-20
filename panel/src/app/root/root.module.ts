@@ -7,11 +7,20 @@ import { EffectsModule } from '@ngrx/effects';
 import { ChromeService } from './chrome';
 import { EFFECTS, provideReducers, REDUCERS_TOKEN, SpyService } from './spy';
 
+// The Redux DevTools are not usable when the panel is running inside the
+// DevTools - only when it's running in a normal page using the mock - so there
+// is no point in loading them.
+
+const pageModules: any[] = [];
+if ((typeof chrome === 'undefined') || !chrome || !chrome.devtools) {
+  pageModules.push(StoreDevtoolsModule.instrument({ maxAge: 10 }));
+}
+
 @NgModule({
   imports: [
     CommonModule,
     StoreModule.forRoot(REDUCERS_TOKEN),
-    StoreDevtoolsModule.instrument({}),
+    ...pageModules,
     EffectsModule.forRoot(EFFECTS)
   ],
   declarations: [],
