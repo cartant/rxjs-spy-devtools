@@ -20,6 +20,7 @@ export class SpyService {
   public posts: Observable<Post>;
   public requests: Observable<Post & Request>;
   public responses: Observable<Post & Response>;
+  public snapshotHints: Observable<Message>;
 
   constructor(private _chromeService: ChromeService) {
     this.posts = _chromeService.posts.pipe(
@@ -50,6 +51,12 @@ export class SpyService {
     );
     this.responses = this.posts.pipe(
       filter(isPostResponse),
+      share()
+    );
+    this.snapshotHints = this.posts.pipe(
+      merge(this.batchedMessages),
+      filter(isBroadcast),
+      filter(message => message.broadcastType === 'snapshot-hint'),
       share()
     );
   }

@@ -3,8 +3,10 @@ import { MESSAGE_CONNECT, MESSAGE_DISCONNECT } from '@devtools/constants';
 import { Actions, Effect } from '@ngrx/effects';
 import { of } from 'rxjs/observable/of';
 import { catchError } from 'rxjs/operators/catchError';
+import { distinct } from 'rxjs/operators/distinct';
 import { filter } from 'rxjs/operators/filter';
 import { map } from 'rxjs/operators/map';
+import { mapTo } from 'rxjs/operators/mapTo';
 import { mergeMap } from 'rxjs/operators/mergeMap';
 import { switchMap } from 'rxjs/operators/switchMap';
 import { ofType } from 'ts-action-operators';
@@ -39,6 +41,10 @@ export class ServiceEffects {
   @Effect()
   public snapshot = this._actions.pipe(
     ofType(ServiceActions.Snapshot),
+    distinct(() => ServiceActions.Snapshot, this._actions.pipe(ofType(
+      ServiceActions.SnapshotFulfilled,
+      ServiceActions.SnapshotRejected
+    ))),
     switchMap(action => this._spyService.request({ requestType: 'snapshot' }).pipe(
       map(response => response.error ?
         new ServiceActions.SnapshotRejected(response.error.toString(), action) :
@@ -46,6 +52,11 @@ export class ServiceEffects {
       ),
       catchError(error => of(new ServiceActions.SnapshotRejected(error.toString(), action)))
     ))
+  );
+
+  @Effect()
+  public snapshotHints = this._spyService.snapshotHints.pipe(
+    mapTo(new ServiceActions.Snapshot())
   );
 
   constructor(private _spyService: SpyService, private _actions: Actions) {}
