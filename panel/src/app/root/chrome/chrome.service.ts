@@ -10,12 +10,6 @@ import { share } from 'rxjs/operators/share';
 import { ChromeMockService } from './chrome-mock.service';
 import { MessageListener } from './types';
 
-export function createChromeService(ngZone: NgZone): ChromeMockService | ChromeService {
-  return ((typeof chrome !== 'undefined') && chrome && chrome.devtools) ?
-    new ChromeService(ngZone) :
-    new ChromeMockService(ngZone);
-}
-
 @Injectable()
 export class ChromeService {
 
@@ -48,4 +42,10 @@ export class ChromeService {
     setTimeout(() => this._backgroundConnection.postMessage(post), 0);
     return post;
   }
+}
+
+export function createChromeService(ngZone: NgZone): ChromeMockService | ChromeService {
+  return ((typeof chrome !== 'undefined') && chrome && chrome.devtools) ?
+    new ChromeService(ngZone) :
+    new ChromeMockService(ngZone);
 }
