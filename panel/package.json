@@ -6,7 +6,7 @@
     "build:d": "ng build",
     "build:p": "ng build --target production --build-optimizer --vendor-chunk",
     "e2e": "ng e2e",
-    "lint": "ng lint",
+    "lint": "ng lint --type-check",
     "ng": "ng",
     "start": "ng serve",
     "test": "ng test --browser ChromeHeadless --single-run",
