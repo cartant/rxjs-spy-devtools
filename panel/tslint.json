@@ -141,6 +141,10 @@
     "no-access-missing-member": true,
     "templates-use-public": true,
     "invoke-injectable": true,
-    "rxjs-no-subject-unsubscribe": { "severity": "error" }
+    "rxjs-no-add": { "severity": "error" },
+    "rxjs-no-operator": { "severity": "error" },
+    "rxjs-no-patched": { "severity": "error" },
+    "rxjs-no-subject-unsubscribe": { "severity": "error" },
+    "rxjs-no-wholesale": { "severity": "error" }
   }
 }
