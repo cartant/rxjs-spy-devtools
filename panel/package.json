@@ -55,8 +55,8 @@
     "match-sorter": "^2.2.0",
     "protractor": "~5.1.2",
     "rxjs-tslint-rules": "^3.2.1",
-    "ts-action": "^3.0.0",
-    "ts-action-operators": "^3.0.0",
+    "ts-action": "^4.0.0",
+    "ts-action-operators": "^4.0.0",
     "ts-node": "~3.2.0",
     "tslint": "~5.3.2",
     "typescript": "~2.6.1"
