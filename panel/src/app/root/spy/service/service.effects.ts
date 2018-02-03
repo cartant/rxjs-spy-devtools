@@ -41,10 +41,10 @@ export class ServiceEffects {
   @Effect()
   public snapshot = this._actions.pipe(
     ofType(ServiceActions.Snapshot),
-    distinct(() => ServiceActions.Snapshot, this._actions.pipe(ofType(
-      ServiceActions.SnapshotFulfilled,
-      ServiceActions.SnapshotRejected
-    ))),
+    distinct(() => ServiceActions.Snapshot, this._actions.pipe(ofType({
+      SnapshotFulfilled: ServiceActions.SnapshotFulfilled,
+      SnapshotRejected: ServiceActions.SnapshotRejected
+    }))),
     switchMap(action => this._spyService.request({ requestType: 'snapshot' }).pipe(
       map(response => response.error ?
         new ServiceActions.SnapshotRejected(response.error.toString(), action) :
