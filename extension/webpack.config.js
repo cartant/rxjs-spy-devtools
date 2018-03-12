@@ -1,31 +1,19 @@
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const path = require("path");
-const UglifyJsWebpackPlugin = require("uglifyjs-webpack-plugin");
 const webpack = require("webpack");
 
 module.exports = env => {
 
-    const plugins = [];
-
-    if (env && env.production) {
-        plugins.push(new UglifyJsWebpackPlugin({
-            uglifyOptions: {
-                beautify: false,
-                ecma: 6,
-                compress: true,
-                comments: false
-            }
-        }));
-    }
+    const mode = (env && env.production) ? "production" : "development";
 
     return {
         context: path.join(__dirname, "./"),
-        devtool: undefined,
         entry: {
             background: "./source/background.ts",
             content: "./source/content.ts",
             devtools: "./source/devtools.ts"
         },
+        mode,
         module: {
             rules: [{
                 test: /\.ts$/,
@@ -62,8 +50,7 @@ module.exports = env => {
                 context: "../panel/dist",
                 from: "*.js",
                 to: path.join(__dirname, "./dist/js")
-            }]),
-            ...plugins
+            }])
         ],
         resolve: {
             alias: {
