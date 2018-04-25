@@ -1,0 +1,135 @@
+<!doctype html>
+<html>
+<head>
+    <title>harness</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+    <style>
+
+        body {
+            font-family: sans-serif;
+        }
+
+        .controls {
+            display: flex;
+            flex-direction: column;
+            left: 50%;
+            position: absolute;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+        }
+
+        .control {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+        }
+
+        .desc {
+            flex: 1;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="controls">
+        <div class="control">
+            <span class="desc">People</span>
+            <button onclick="startPeople()">&#9658;</button>
+            <button onclick="stop()">&#9724;</button>
+        </div>
+        <div class="control">
+            <span class="desc">Many (without source maps)</span>
+            <button onclick="startMany(false)">&#9658;</button>
+            <button onclick="stop()">&#9724;</button>
+        </div>
+        <div class="control">
+            <span class="desc">Many (with source maps)</span>
+            <button onclick="startMany(true)">&#9658;</button>
+            <button onclick="stop()">&#9724;</button>
+        </div>
+    </div>
+    <script src="../node_modules/core-js/client/core.min.js"></script>
+    <script src="../node_modules/rxjs/bundles/Rx.js"></script>
+    <script src="../node_modules/rxjs-spy/bundles/rxjs-spy.umd.js"></script>
+    <script>
+        function startPeople() {
+            if (window.subscription) {
+                stop();
+            }
+            spy = RxSpy.create({
+                devTools: true,
+                keptDuration: 10e3,
+                sourceMaps: true
+            });
+            window.subscription = new Rx.Subscription(() => spy.teardown());
+            const interval = new Rx.Observable
+                .interval(2000)
+                .tag("interval");
+            const subscriber = Rx.Subscriber.create(
+                value => {},
+                error => {},
+                () => {}
+            );
+            window.subscription.add(interval.subscribe(subscriber));
+            const people = interval
+                .map(value => {
+                    const names = ["alice", "bob"];
+                    return names[value % names.length];
+                })
+                .tag("people");
+            window.subscription.add(people.subscribe());
+        }
+        function startMany(sourceMaps) {
+            if (window.subscription) {
+                stop();
+            }
+            spy = RxSpy.create({
+                devTools: true,
+                keptDuration: 0,
+                sourceMaps
+            });
+            window.subscription = new Rx.Subscription(() => spy.teardown());
+            // https://bugify.cartant.com/issues/4075
+            const source = () => Rx.Observable
+                .concat(
+                    Rx.Observable.of(1, 2, 3, 4, 5)
+                        .tag("1")
+                        .tag("1.1")
+                        .tag("1.1.1")
+                        .tag("1.1.1.1"),
+                    Rx.Observable.of(1, 2, 3, 4, 5, Rx.Scheduler.asap)
+                        .tag("2")
+                        .tag("2.2")
+                        .tag("2.2.2")
+                        .tag("2.2.2.2"),
+                    Rx.Observable.never()
+                        .tag("3")
+                        .tag("3.3")
+                        .tag("3.3.3")
+                        .tag("3.3.3.3")
+                )
+                .tag("4")
+                .tag("4.4")
+                .tag("4.4.4")
+                .tag("4.4.4.4");
+            const iters = 100;
+            const all = [];
+            for (let i = 0; i < iters; ++i) {
+                all.push(source());
+            }
+            const root = Rx.Observable
+                .merge(...all)
+                .tag("5");
+            window.subscription.add(root.subscribe());
+        }
+        function stop() {
+            if (window.subscription) {
+                window.subscription.unsubscribe();
+                window.subscription = null;
+            }
+        }
+    </script>
+</body>
+</html>
