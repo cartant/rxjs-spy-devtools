@@ -2,11 +2,12 @@
   "dependencies": {},
   "description": "DevTools for debugging RxJS applications",
   "devDependencies": {
-    "@types/chrome": "^0.0.62",
+    "@types/chrome": "^0.0.63",
     "copy-webpack-plugin": "^4.2.0",
     "rimraf": "^2.6.2",
     "rxjs": "^5.5.4",
-    "rxjs-spy": "../../rxjs-spy/dist",
+    "rxjs-spy": "^6.0.0",
+    "superstatic": "^5.0.1",
     "ts-loader": "^4.0.0",
     "typescript": "~2.7.1",
     "webpack": "^4.0.0",
@@ -24,8 +25,9 @@
   "scripts": {
     "build:d": "rimraf dist && ./node_modules/.bin/webpack",
     "build:p": "rimraf dist && ./node_modules/.bin/webpack --env.production",
-    "watch": "./node_modules/.bin/webpack -w",
-    "version": "node ./scripts/version.js"
+    "harness": "superstatic",
+    "version": "node ./scripts/version.js",
+    "watch": "./node_modules/.bin/webpack -w"
   },
   "version": "0.0.1"
 }
