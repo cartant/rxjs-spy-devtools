@@ -29,6 +29,10 @@ It's not yet ready to be released on the Chrome Web Store, but if you want to ch
 
 5. If you open the DevTools, you should have an "RxJS" entry in the tab panel. (You might have to click the `>>` button to see it.)
 
-6. If you navigate to a page in which a spy has been created (using at least version 6.0.0 of `rxjs-spy`), you should see a list of observables (filterable on tag and type) in the "RxJS" panel. You might find that you need to refresh the page after opening to the "RxJS" panel - as I said, it still needs some work.
+6. If you navigate to a page in which a spy has been created (using at least version 6.0.0 of `rxjs-spy`), you should see a list of observables (filterable on tag and type) in the "RxJS" panel. The simplest way to do this is to run the following command from within the `extension` directory:
+
+        yarn harness
+
+    You might find that you need to refresh the page after opening to the "RxJS" panel - as I said, it still needs some work.
 
     The panel's UI isn't indicative of what the released tools will look like - it's pretty basic and is just there to expose/test the logging and pausing functionality, etc.
