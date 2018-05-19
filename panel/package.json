@@ -54,6 +54,7 @@
     "karma-jasmine-html-reporter": "^0.2.2",
     "match-sorter": "^2.2.0",
     "protractor": "~5.1.2",
+    "rxjs-marbles": "^4.1.0",
     "rxjs-tslint-rules": "^3.2.1",
     "ts-action": "^6.0.0",
     "ts-action-operators": "^6.0.0",
