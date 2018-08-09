@@ -2,16 +2,16 @@
   "dependencies": {},
   "description": "DevTools for debugging RxJS applications",
   "devDependencies": {
-    "@types/chrome": "^0.0.63",
+    "@types/chrome": "^0.0.71",
     "copy-webpack-plugin": "^4.2.0",
     "rimraf": "^2.6.2",
     "rxjs": "^5.5.4",
     "rxjs-spy": "^6.0.0",
-    "superstatic": "^5.0.1",
+    "superstatic": "^6.0.0",
     "ts-loader": "^4.0.0",
-    "typescript": "~2.7.1",
+    "typescript": "~3.0.1",
     "webpack": "^4.0.0",
-    "webpack-cli": "^2.0.9"
+    "webpack-cli": "^3.0.0"
   },
   "homepage": "https://github.com/cartant/rxjs-spy",
   "license": "MIT",
