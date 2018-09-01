@@ -11,14 +11,8 @@ import {
     PANEL_MESSAGE
 } from "@devtools/constants";
 
-import { fromEventPattern } from "rxjs/observable/fromEventPattern";
-import { filter } from "rxjs/operators/filter";
-import { finalize } from "rxjs/operators/finalize";
-import { map } from "rxjs/operators/map";
-import { mergeMap } from "rxjs/operators/mergeMap";
-import { share } from "rxjs/operators/share";
-import { takeUntil } from "rxjs/operators/takeUntil";
-import { tap } from "rxjs/operators/tap";
+import { fromEventPattern } from "rxjs";
+import { filter, finalize, map, mergeMap, share, takeUntil, tap } from "rxjs/operators";
 
 type Message = any;
 type MessageListener = (message: Message) => void;

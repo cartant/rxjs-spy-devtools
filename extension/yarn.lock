@@ -2590,9 +2590,9 @@ run-queue@^1.0.0, run-queue@^1.0.3:
   dependencies:
     aproba "^1.1.1"
 
-rxjs-spy@^6.0.0:
-  version "6.1.1"
-  resolved "https://registry.yarnpkg.com/rxjs-spy/-/rxjs-spy-6.1.1.tgz#9425b693024c18f2d1ff7681a150dd4c02958a5c"
+rxjs-spy@^7.1.0:
+  version "7.1.0"
+  resolved "https://registry.yarnpkg.com/rxjs-spy/-/rxjs-spy-7.1.0.tgz#c4d023c311788f057e69867fc43f12673b366717"
   dependencies:
     "@types/circular-json" "^0.4.0"
     "@types/stacktrace-js" "^0.0.32"
@@ -2600,13 +2600,7 @@ rxjs-spy@^6.0.0:
     error-stack-parser "^2.0.1"
     stacktrace-gps "^3.0.2"
 
-rxjs@^5.5.4:
-  version "5.5.12"
-  resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-5.5.12.tgz#6fa61b8a77c3d793dbaf270bee2f43f652d741cc"
-  dependencies:
-    symbol-observable "1.0.1"
-
-rxjs@^6.1.0:
+rxjs@^6.1.0, rxjs@^6.3.0:
   version "6.3.1"
   resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-6.3.1.tgz#878a1a8c64b8a5da11dcf74b5033fe944cdafb84"
   dependencies:
@@ -2928,10 +2922,6 @@ supports-color@^5.3.0, supports-color@^5.4.0:
   resolved "https://registry.yarnpkg.com/supports-color/-/supports-color-5.5.0.tgz#e2e69a44ac8772f78a1ec0b35b689df6530efc8f"
   dependencies:
     has-flag "^3.0.0"
-
-symbol-observable@1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/symbol-observable/-/symbol-observable-1.0.1.tgz#8340fc4702c3122df5d22288f88283f513d3fdd4"
 
 tapable@^1.0.0:
   version "1.0.0"
