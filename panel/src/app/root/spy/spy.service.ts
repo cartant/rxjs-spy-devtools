@@ -2,13 +2,8 @@ import { Injectable } from '@angular/core';
 import { CONTENT_MESSAGE, MESSAGE_REQUEST } from '@devtools/constants';
 import { isBatch, isBroadcast, isPostRequest, isPostResponse } from '@devtools/guards';
 import { Broadcast, DeckStats, Message, Notification, Post, Request, Response } from '@devtools/interfaces';
-import { Observable } from 'rxjs/Observable';
-import { concatMap } from 'rxjs/operators/concatMap';
-import { filter } from 'rxjs/operators/filter';
-import { map } from 'rxjs/operators/map';
-import { merge } from 'rxjs/operators/merge';
-import { share } from 'rxjs/operators/share';
-import { take } from 'rxjs/operators/take';
+import { Observable } from 'rxjs';
+import { concatMap, filter, map, merge, share, take } from 'rxjs/operators';
 import { ChromeService } from '../chrome';
 
 @Injectable()

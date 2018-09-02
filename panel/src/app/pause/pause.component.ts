@@ -1,9 +1,8 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { Pause, PauseCommand, PausePlugin, PauseTeardown, selectPausePluginEntities, State } from '@app/root/spy';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
-import { first } from 'rxjs/operators/first';
-import { map } from 'rxjs/operators/map';
+import { Observable } from 'rxjs';
+import { first, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-pause',

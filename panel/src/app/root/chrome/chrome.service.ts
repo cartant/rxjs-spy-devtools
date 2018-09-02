@@ -2,11 +2,8 @@ import { Injectable, NgZone, Provider } from '@angular/core';
 import { enterZone } from '@app/shared/utils';
 import { PANEL_BACKGROUND_CONNECT, PANEL_BACKGROUND_INIT, PANEL_MESSAGE } from '@devtools/constants';
 import { Message, Post } from '@devtools/interfaces';
-import { Observable } from 'rxjs/Observable';
-import { empty } from 'rxjs/observable/empty';
-import { fromEventPattern } from 'rxjs/observable/fromEventPattern';
-import { observeOn } from 'rxjs/operators/observeOn';
-import { share } from 'rxjs/operators/share';
+import { fromEventPattern, Observable } from 'rxjs';
+import { observeOn, share } from 'rxjs/operators';
 import { ChromeMockService } from './chrome-mock.service';
 import { MessageListener } from './types';
 

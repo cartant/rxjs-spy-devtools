@@ -3,7 +3,7 @@ import { APP_AUDIT_TIME_OUTPUT } from '@app/constants';
 import { Notification, selectAllNotifications, State } from '@app/root/spy';
 import { DataSource } from '@app/shared/utils';
 import { Store } from '@ngrx/store';
-import { auditTime } from 'rxjs/operators/auditTime';
+import { auditTime } from 'rxjs/operators';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,

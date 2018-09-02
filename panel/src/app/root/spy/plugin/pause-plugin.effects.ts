@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
-import { of } from 'rxjs/observable/of';
-import { catchError } from 'rxjs/operators/catchError';
-import { map } from 'rxjs/operators/map';
-import { switchMap } from 'rxjs/operators/switchMap';
+import { of } from 'rxjs';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import { ofType } from 'ts-action-operators';
 import * as PluginActions from './plugin.actions';
 import { SpyService } from '../spy.service';

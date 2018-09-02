@@ -1,5 +1,5 @@
 import { DataSource as BaseDataSource } from '@angular/cdk/collections';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 export class DataSource<T> extends BaseDataSource<T> {
 

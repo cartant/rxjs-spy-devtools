@@ -19,15 +19,8 @@ import {
   SubscriptionSnapshot
 } from '@devtools/interfaces';
 
-import { Observable } from 'rxjs/Observable';
-import { empty } from 'rxjs/observable/empty';
-import { interval } from 'rxjs/observable/interval';
-import { merge } from 'rxjs/observable/merge';
-import { timer } from 'rxjs/observable/timer';
-import { map } from 'rxjs/operators/map';
-import { share } from 'rxjs/operators/share';
-import { take } from 'rxjs/operators/take';
-import { Subject } from 'rxjs/Subject';
+import { interval, merge, Observable, Subject, timer } from 'rxjs';
+import { map, share, take } from 'rxjs/operators';
 
 @Injectable()
 export class ChromeMockService {

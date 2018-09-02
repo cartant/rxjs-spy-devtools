@@ -15,14 +15,21 @@
     "moduleResolution": "node",
     "outDir": "./dist/out-tsc",
     "paths": {
-      "@app/*": ["./app/*"],
-      "@devtools/*": ["../../extension/node_modules/rxjs-spy/devtools/*"],
-      "@env/*": ["./environments/*"]
+      "@app/*": [
+        "./app/*"
+      ],
+      "@devtools/*": [
+        "../../extension/node_modules/rxjs-spy/devtools/*"
+      ],
+      "@env/*": [
+        "./environments/*"
+      ]
     },
     "sourceMap": true,
     "target": "es5",
     "typeRoots": [
       "node_modules/@types"
-    ]
+    ],
+    "module": "es2015"
   }
 }

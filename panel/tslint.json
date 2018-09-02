@@ -17,8 +17,7 @@
     "eofline": true,
     "forin": true,
     "import-blacklist": [
-      true,
-      "rxjs"
+      true
     ],
     "import-spacing": true,
     "indent": [
@@ -141,10 +140,14 @@
     "no-access-missing-member": true,
     "templates-use-public": true,
     "invoke-injectable": true,
-    "rxjs-no-add": { "severity": "error" },
-    "rxjs-no-operator": { "severity": "error" },
-    "rxjs-no-patched": { "severity": "error" },
+    "rxjs-no-create": { "severity": "error" },
+    "rxjs-no-internal": { "severity": "error" },
     "rxjs-no-subject-unsubscribe": { "severity": "error" },
-    "rxjs-no-wholesale": { "severity": "error" }
+    "rxjs-no-subject-value": { "severity": "error" },
+    "rxjs-no-unsafe-catch": { "severity": "error" },
+    "rxjs-no-unsafe-first": { "severity": "error" },
+    "rxjs-no-unsafe-switchmap": { "severity": "error" },
+    "rxjs-no-unsafe-takeuntil": { "severity": "error" },
+    "rxjs-throw-error": { "severity": "error" }
   }
 }

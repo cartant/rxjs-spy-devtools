@@ -1,5 +1,5 @@
 import { TestBed, inject } from '@angular/core/testing';
-import { ChromeMockService, ChromeService } from '@app/core/chrome';
+import { ChromeMockService, ChromeService } from '@app/root/chrome';
 import { SpyService } from './spy.service';
 
 describe('SpyService', () => {

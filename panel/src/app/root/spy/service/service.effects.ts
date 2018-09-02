@@ -1,14 +1,8 @@
 import { Injectable } from '@angular/core';
 import { MESSAGE_CONNECT, MESSAGE_DISCONNECT } from '@devtools/constants';
 import { Actions, Effect } from '@ngrx/effects';
-import { of } from 'rxjs/observable/of';
-import { catchError } from 'rxjs/operators/catchError';
-import { distinct } from 'rxjs/operators/distinct';
-import { filter } from 'rxjs/operators/filter';
-import { map } from 'rxjs/operators/map';
-import { mapTo } from 'rxjs/operators/mapTo';
-import { mergeMap } from 'rxjs/operators/mergeMap';
-import { switchMap } from 'rxjs/operators/switchMap';
+import { of } from 'rxjs';
+import { catchError, distinct, filter, map, mapTo, mergeMap, switchMap } from 'rxjs/operators';
 import { ofType } from 'ts-action-operators';
 import * as ServiceActions from './service.actions';
 import { SpyService } from '../spy.service';

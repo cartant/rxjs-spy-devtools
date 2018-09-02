@@ -6,10 +6,7 @@ import { DataSource } from '@app/shared/utils';
 import { ObservableSnapshot } from '@devtools/interfaces';
 import { environment } from '@env/environment';
 import { Store } from '@ngrx/store';
-import { auditTime } from 'rxjs/operators/auditTime';
-import { combineLatest } from 'rxjs/operators/combineLatest';
-import { map } from 'rxjs/operators/map';
-import { startWith } from 'rxjs/operators/startWith';
+import { auditTime, combineLatest, map, startWith } from 'rxjs/operators';
 import matchSorter, { caseRankings, rankings } from 'match-sorter';
 
 @Component({

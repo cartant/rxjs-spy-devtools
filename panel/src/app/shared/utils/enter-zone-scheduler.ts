@@ -1,11 +1,9 @@
 import { NgZone } from '@angular/core';
-import { Scheduler } from 'rxjs/Scheduler';
-import { async } from 'rxjs/scheduler/async';
-import { Subscription } from 'rxjs/Subscription';
+import { asyncScheduler, SchedulerLike, Subscription } from 'rxjs';
 
 export class EnterZoneScheduler {
 
-  constructor(private _zone: NgZone, private _scheduler: Scheduler) {}
+  constructor(private _zone: NgZone, private _scheduler: SchedulerLike) {}
 
   schedule(...args: any[]): Subscription {
     const { _scheduler, _zone } = this;
@@ -13,6 +11,6 @@ export class EnterZoneScheduler {
   }
 }
 
-export function enterZone(zone: NgZone, scheduler: Scheduler = async): Scheduler {
+export function enterZone(zone: NgZone, scheduler: SchedulerLike = asyncScheduler): SchedulerLike {
     return new EnterZoneScheduler(zone, scheduler) as any;
 }
