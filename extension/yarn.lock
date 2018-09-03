@@ -2591,8 +2591,8 @@ run-queue@^1.0.0, run-queue@^1.0.3:
     aproba "^1.1.1"
 
 rxjs-spy@^7.1.0:
-  version "7.1.0"
-  resolved "https://registry.yarnpkg.com/rxjs-spy/-/rxjs-spy-7.1.0.tgz#c4d023c311788f057e69867fc43f12673b366717"
+  version "7.1.1"
+  resolved "https://registry.yarnpkg.com/rxjs-spy/-/rxjs-spy-7.1.1.tgz#3c98e5509a685c90345ee04554a43367e9b1a183"
   dependencies:
     "@types/circular-json" "^0.4.0"
     "@types/stacktrace-js" "^0.0.32"
