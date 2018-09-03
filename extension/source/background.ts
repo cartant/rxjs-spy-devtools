@@ -30,7 +30,7 @@ const ports = fromEventPattern<Port>(
     handler => chrome.runtime.onConnect.removeListener(handler as PortListener)
 ).pipe(share());
 
-const messages = (port: Port, teardown: () => void) => fromEventPattern<Message>(
+const messages = (port: Port, teardown: () => void) => fromEventPattern<[Message, Port]>(
     handler => port.onMessage.addListener(handler as MessageListener),
     handler => port.onMessage.removeListener(handler as MessageListener)
 ).pipe(
@@ -38,6 +38,7 @@ const messages = (port: Port, teardown: () => void) => fromEventPattern<Message>
         handler => port.onDisconnect.addListener(handler as PortListener),
         handler => port.onDisconnect.removeListener(handler as PortListener)
     )),
+    map(([message]) => message),
     finalize(teardown),
     share()
 );
@@ -77,7 +78,7 @@ panelMessages.pipe(
             connection.contentPort.postMessage(message);
         }
     } else {
-        console.warn("Unexpected message", message);
+        console.warn("Unexpected panel message", message);
     }
 });
 
@@ -112,6 +113,6 @@ contentMessages.subscribe(({ key, port, message }) => {
             connection.panelPort.postMessage(message);
         }
     } else {
-        console.warn("Unexpected message", message);
+        console.warn("Unexpected content message", message);
     }
 });

@@ -3,7 +3,7 @@ import { enterZone } from '@app/shared/utils';
 import { PANEL_BACKGROUND_CONNECT, PANEL_BACKGROUND_INIT, PANEL_MESSAGE } from '@devtools/constants';
 import { Message, Post } from '@devtools/interfaces';
 import { fromEventPattern, Observable } from 'rxjs';
-import { observeOn, share } from 'rxjs/operators';
+import { map, observeOn, share } from 'rxjs/operators';
 import { ChromeMockService } from './chrome-mock.service';
 import { MessageListener } from './types';
 
@@ -24,10 +24,11 @@ export class ChromeService {
     this._backgroundConnection = chrome.runtime.connect({ name: PANEL_BACKGROUND_CONNECT });
     this._backgroundConnection.postMessage({ postType: PANEL_BACKGROUND_INIT, tabId });
 
-    this.posts = fromEventPattern<Post>(
+    this.posts = fromEventPattern<[Post, chrome.runtime.Port]>(
       handler => this._backgroundConnection.onMessage.addListener(handler as MessageListener),
       handler => this._backgroundConnection.onMessage.removeListener(handler as MessageListener)
     ).pipe(
+      map(([post]) => post),
       observeOn(enterZone(ngZone)),
       share()
     );
