@@ -92,7 +92,7 @@ export class ChromeMockService {
         map(counter => ({
           messageType: MESSAGE_CONNECT,
           postId: '-1',
-          postType: 'content-message'
+          postType: CONTENT_MESSAGE
         })),
         share()
       ),
