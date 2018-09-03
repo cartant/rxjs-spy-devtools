@@ -1,0 +1,18 @@
+{
+  "extends": [
+      "rxjs-tslint-rules",
+      "tslint-etc"
+  ],
+  "rules": {
+    "no-unused-declaration": { "severity": "error" },
+    "rxjs-no-create": { "severity": "error" },
+    "rxjs-no-internal": { "severity": "error" },
+    "rxjs-no-subject-unsubscribe": { "severity": "error" },
+    "rxjs-no-subject-value": { "severity": "error" },
+    "rxjs-no-unsafe-catch": { "severity": "error" },
+    "rxjs-no-unsafe-first": { "severity": "error" },
+    "rxjs-no-unsafe-switchmap": { "severity": "error" },
+    "rxjs-no-unsafe-takeuntil": { "severity": "error" },
+    "rxjs-throw-error": { "severity": "error" }
+  }
+}

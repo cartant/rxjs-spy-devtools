@@ -7,8 +7,11 @@
     "rimraf": "^2.6.2",
     "rxjs": "^6.3.0",
     "rxjs-spy": "^7.1.0",
+    "rxjs-tslint-rules": "^4.8.0",
     "superstatic": "^6.0.0",
     "ts-loader": "^4.0.0",
+    "tslint": "^5.11.0",
+    "tslint-etc": "^1.2.4",
     "typescript": "~3.0.1",
     "webpack": "^4.0.0",
     "webpack-cli": "^3.0.0"
@@ -26,6 +29,7 @@
     "build:d": "rimraf dist && ./node_modules/.bin/webpack",
     "build:p": "rimraf dist && ./node_modules/.bin/webpack --env.production",
     "harness": "superstatic",
+    "lint": "tslint --project tsconfig.json source/**/*.ts",
     "version": "node ./scripts/version.js",
     "watch": "./node_modules/.bin/webpack -w"
   },

@@ -34,12 +34,12 @@ const messages = (port: Port, teardown: () => void) => fromEventPattern<[Message
     handler => port.onMessage.addListener(handler as MessageListener),
     handler => port.onMessage.removeListener(handler as MessageListener)
 ).pipe(
+    map(([message]) => message),
+    finalize(teardown),
     takeUntil(fromEventPattern(
         handler => port.onDisconnect.addListener(handler as PortListener),
         handler => port.onDisconnect.removeListener(handler as PortListener)
     )),
-    map(([message]) => message),
-    finalize(teardown),
     share()
 );
 

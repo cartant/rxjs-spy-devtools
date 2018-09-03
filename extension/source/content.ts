@@ -3,15 +3,7 @@
  * can be found in the LICENSE file at https://github.com/cartant/rxjs-spy-devtools
  */
 
-import {
-    CONTENT_BACKGROUND_CONNECT,
-    CONTENT_MESSAGE,
-    EXTENSION_KEY,
-    MESSAGE_CONNECT,
-    MESSAGE_DISCONNECT,
-    PANEL_MESSAGE
-} from "@devtools/constants";
-
+import { CONTENT_BACKGROUND_CONNECT, PANEL_MESSAGE } from "@devtools/constants";
 import { Connection, Extension, Message, Post } from "@devtools/interfaces";
 
 const backgroundConnection = chrome.runtime.connect({ name: CONTENT_BACKGROUND_CONNECT });
