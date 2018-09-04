@@ -7,7 +7,7 @@ import { ObservableSnapshot } from '@devtools/interfaces';
 import { environment } from '@env/environment';
 import { Store } from '@ngrx/store';
 import { auditTime, combineLatest, map, startWith } from 'rxjs/operators';
-import matchSorter, { caseRankings, rankings } from 'match-sorter';
+import matchSorter from 'match-sorter';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,

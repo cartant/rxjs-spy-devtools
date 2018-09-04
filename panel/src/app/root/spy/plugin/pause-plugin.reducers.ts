@@ -1,5 +1,5 @@
 import { createEntityAdapter, EntityState } from '@ngrx/entity';
-import { Action, createFeatureSelector } from '@ngrx/store';
+import { createFeatureSelector } from '@ngrx/store';
 import { on, reducer } from 'ts-action';
 import * as PluginActions from './plugin.actions';
 import * as ServiceActions from '../service/service.actions';

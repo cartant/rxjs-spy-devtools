@@ -1,5 +1,5 @@
 import { errorBase } from '@app/shared/utils';
-import { action, base, Ctor } from 'ts-action';
+import { action, base } from 'ts-action';
 
 function IdBase() {
   return base(class { constructor(public spyId: string) {} });

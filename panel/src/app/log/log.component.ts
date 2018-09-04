@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MatCheckboxChange } from '@angular/material';
 import { Log, LogPlugin, LogTeardown, selectLogPluginEntities, State } from '@app/root/spy';
 import { Store } from '@ngrx/store';

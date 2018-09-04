@@ -1,6 +1,6 @@
 import { InjectionToken, Provider } from '@angular/core';
 import { ActionReducerMap } from '@ngrx/store';
-import { Notification, notificationReducer, NotificationState } from './notification/notification.reducers';
+import { notificationReducer, NotificationState } from './notification/notification.reducers';
 import { observableReducer, ObservableState } from './observable/observable.reducers';
 import { logPluginReducer, LogPluginState } from './plugin/log-plugin.reducers';
 import { pausePluginReducer, PausePluginState } from './plugin/pause-plugin.reducers';

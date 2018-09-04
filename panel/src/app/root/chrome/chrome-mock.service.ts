@@ -12,7 +12,6 @@ import {
 
 import {
   Message,
-  Notification,
   ObservableSnapshot,
   Post,
   SubscriberSnapshot,
