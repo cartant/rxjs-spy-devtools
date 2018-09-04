@@ -5992,6 +5992,13 @@ tslib@^1.7.1, tslib@^1.8.0, tslib@^1.8.1, tslib@^1.9.0:
   version "1.9.3"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.9.3.tgz#d7e4dd79245d85428c4d7e4822a79917954ca286"
 
+tslint-etc@^1.2.4:
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/tslint-etc/-/tslint-etc-1.2.4.tgz#88a7147b1c3871c684023e7a2c41ad89d98f263d"
+  dependencies:
+    tslib "^1.8.0"
+    tsutils "^3.0.0"
+
 tslint@~5.11.0:
   version "5.11.0"
   resolved "https://registry.yarnpkg.com/tslint/-/tslint-5.11.0.tgz#98f30c02eae3cde7006201e4c33cb08b48581eed"

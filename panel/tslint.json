@@ -1,6 +1,7 @@
 {
   "extends": [
-      "rxjs-tslint-rules"
+      "rxjs-tslint-rules",
+      "tslint-etc"
   ],
   "rulesDirectory": [
     "node_modules/codelyzer"
@@ -148,6 +149,7 @@
     "rxjs-no-unsafe-first": { "severity": "error" },
     "rxjs-no-unsafe-switchmap": { "severity": "error" },
     "rxjs-no-unsafe-takeuntil": { "severity": "error" },
-    "rxjs-throw-error": { "severity": "error" }
+    "rxjs-throw-error": { "severity": "error" },
+    "no-unused-declaration": { "severity": "error" }
   }
 }
