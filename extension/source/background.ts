@@ -83,12 +83,8 @@ panelMessages.pipe(
 });
 
 const contentMessages = ports.pipe(
-    filter(port => port.name === CONTENT_BACKGROUND_CONNECT),
-    map(port => ({
-        key: ((port && port.sender && port.sender.tab) ? port.sender.tab.id : undefined)! as TabId,
-        port
-    })),
-    filter(({ key }) => Boolean(key)),
+    filter(port => port && port.sender && port.sender.tab && (port.name === CONTENT_BACKGROUND_CONNECT)),
+    map(port => ({ key: port.sender.tab.id, port })),
     tap(({ key, port }) => {
         const connection = connections[key];
         if (connection) {
