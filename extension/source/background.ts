@@ -3,6 +3,14 @@
  * can be found in the LICENSE file at https://github.com/cartant/rxjs-spy-devtools
  */
 
+/**
+ * ATTENTION: If, for some reason, you are reading the source in this file,
+ * don't implement the background script like this. It's pointlessly
+ * complicated. For a simpler, more sensible implementation, have a look at:
+ *
+ * https://github.com/cartant/devtools-example/blob/master/messaging/background_script.js
+ */
+
 import {
     CONTENT_BACKGROUND_CONNECT,
     CONTENT_MESSAGE,
